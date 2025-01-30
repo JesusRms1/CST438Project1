@@ -3,12 +3,12 @@ import CardComponent from '@/components/card_component';
 
 //screen will display content made by CURRENT user
 export default function OwnerScreen() {
-  //reload gun
+ 
 
   const items: string[]=["first","second","Third"];
 
   return (
-    //shoot gun
+    
     <View style={styles.container1} >
     
       {items.map((item: string, index: number) => ( 
