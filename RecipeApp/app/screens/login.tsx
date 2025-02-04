@@ -1,18 +1,19 @@
 import { Text, View, TextInput, TouchableOpacity, StyleSheet } from "react-native";
 import React, { useState } from 'react';
 
-const AccountScreen = () => {
+const AccountScreen = ({ navigation }: any) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  const Signup = () => {
-    console.log("Navigate to Signup Screen");
-    // Add directions to signup page
-  };
   const loggedIn = () => {
-      console.log("Navigate to Home Screen");
-    // Add directions to home page
+    console.log("Navigate to Home Screen");
+    // Navigate to home screen (you can configure this later)
   };
+
+  const Signup = () => {
+    navigation.navigate("Signup"); // Navigate to Signup screen
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Login</Text>

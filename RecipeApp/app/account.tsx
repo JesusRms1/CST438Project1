@@ -1,14 +1,21 @@
-import { Text, View, TextInput, TouchableOpacity, StyleSheet } from "react-native";
-import React, { useState } from 'react';
-//file orignally an index
-const AccountScreen = () => {
+import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 
+import AccountScreen from './screens/login'; // Your login screen
+import SignupScreen from './screens/signup';   // Your signup screen
+
+const Stack = createStackNavigator();
+
+const App = () => {
   return (
-    <View >
-      <Text >Fix</Text>
-    </View>
+    <NavigationContainer >
+      <Stack.Navigator initialRouteName="Login" >
+        <Stack.Screen name="Login" component={AccountScreen} />
+        <Stack.Screen name="Signup" component={SignupScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 };
 
-
-export default AccountScreen;
+export default App;
