@@ -6,7 +6,7 @@ const AccountScreen = ({ navigation }: any) => {
   const [password, setPassword] = useState('');
 
   const loggedIn = () => {
-    console.log("Navigate to Home Screen");
+    navigation.navigate("Home");
     // Navigate to home screen (you can configure this later)
   };
 
