@@ -9,18 +9,35 @@ import { CheckBox } from 'react-native-elements';
 
 const SearchPage = () => {
   const [number, onChangeNumber] = React.useState('');
-  const [checked, setChecked] = React.useState(true); // For single checkbox state
-  const toggleCheckbox = () => setChecked(!checked);
-  const items: string[] = ["Apple", "Banana", "Cherry"];
+  // const [checked, setChecked] = React.useState(true); 
+  const [checkedItems, setCheckedItems] = React.useState<Record<string, boolean>>({});
+
+
+  const items: string[] = ["American", "Mexican", "Japanese"];
 
   const CollapseFilter = () => {
     const [isOpen, setIsOpen] = React.useState(false);
     const togglePanel = () => setIsOpen(!isOpen);
-    //radio
-    const [selectedIndex, setIndex] = React.useState(0);
+    
+    const [selectedIndex, setIndex] = React.useState<number | null>(null); // For radio button selection
     const handleCheckboxPress = (title: string) => {
       console.log('Checkbox clicked:', title);
     };
+    const toggleCheckbox = (name:string) => { //react n expo equivalent of checkbox value
+      setCheckedItems((prev)=> ({
+        ...prev,
+        [name]:!prev[name],
+      }));
+    }
+    // const [checkedItems, setCheckedItems] = React.useState<Record<string, boolean>>(
+    //   items.reduce((acc, item) => ({ ...acc, [item]: false }), {})
+    // );
+    
+    const clearFilters = () => {
+      setCheckedItems(items.reduce((acc, item) => ({ ...acc, [item]: false }), {}));
+    };
+    
+  
 
     
 
@@ -33,28 +50,38 @@ const SearchPage = () => {
           <View style={{ marginTop: 10, borderWidth: 1, borderColor: '#000', padding: 10, margin: 12, backgroundColor: '#c2ecff',
             flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap'
            }}>
-            <Text>Collapsible Panel Content</Text>
-            <Text>This is the content inside the collapsible panel.</Text>
-            
+            <Text>Collapsible Panel Content{"\n"}</Text>
+            <Text>This is the content inside the collapsible panel. {"\n"}</Text>
+            <View style={styles.floatingButton}>
+            <Button 
+            title="Clear Filters"
+            onPress={()=>clearFilters()}
+            />
+            </View>
 
             {/* Looping through items to render checkboxes */}
+            {/* does NOT close when switching to other tabs (Home,about,settings) */}
             {items.map((item, index) => (
               <CheckBox
                 key={index}
                 checked={selectedIndex === index}
-                onPress={() => {setIndex(index);
+                onPress={() => 
+                  {setIndex(index);
                   handleCheckboxPress(item);
+                  // toggleCheckbox(item);//this causes panel to close
                 }}
                 iconType="material-community"
                 checkedIcon="checkbox-marked"
                 uncheckedIcon="checkbox-blank-outline"
                 checkedColor="red"
-                title={item}  // Dynamically setting the title
+                title={item} 
                 
               />
             ))}
           </View>
         )}
+          {/* Debugging: Show selected values */}
+        <Text style={styles.text}>Selected: {JSON.stringify(checkedItems, null, 2)}</Text>
       </ScrollView>
     );
   };
@@ -109,19 +136,26 @@ const styles = StyleSheet.create({
     backgroundColor: '#fcf7e8',
   },
   fakeButton:{
-    backgroundColor: 'blue',  // Set button background color
-    paddingVertical: 12,       // Vertical padding for spacing
-    paddingHorizontal: 20,     // Horizontal padding for spacing
-    borderRadius: 5,           // Rounded corners
-    margin: 10,                // Space between buttons
+    backgroundColor: 'blue', 
+    paddingVertical: 12,     
+    paddingHorizontal: 20,     
+    borderRadius: 5,           
+    margin: 10,               
     alignItems: 'center',  
   },
   fakeText:{
-    color: 'white',            // Text color (button text)
-    fontSize: 16,              // Font size for the button text
-    fontWeight: 'bold',        // Bold text
+    color: 'white',            
+    fontSize: 16,             
+    fontWeight: 'bold',       
     textAlign: 'center', 
   },
+  floatingButton: {
+    position: 'absolute',
+    bottom: 20, // Adjust distance from bottom
+    right: 20, // Adjust distance from right
+    borderRadius: 30, // Optional: rounded corners
+    overflow: 'hidden', // Ensures button styling stays clean
+  }
 });
 
 export default SearchPage;
