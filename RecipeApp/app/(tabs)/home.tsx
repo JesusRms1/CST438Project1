@@ -19,8 +19,21 @@ const UserTab = createBottomTabNavigator();
 const HomeMScreen = () => {
   return (
     <HomeTab.Navigator screenOptions={{ headerShown: false }}>
-      <HomeTab.Screen name="Your Stuff" component={Stuff} />
-      <HomeTab.Screen name="Saved Stuff" component={Saved} />
+      <HomeTab.Screen name="Your Recipes" component={Stuff}
+      options={{
+                title: 'Recipes',
+                tabBarIcon: ({ color, focused }) => (
+                <Ionicons name={focused ? 'document-text-sharp' : 'document-text-outline'} color={color} size={24} />
+                ),
+                }}
+      />
+      <HomeTab.Screen name="Your Saved Recipes" component={Saved}
+      options={{
+                title: 'Saved',
+                tabBarIcon: ({ color, focused }) => (
+                <Ionicons name={focused ? 'bookmark-sharp' : 'bookmark-outline'} color={color} size={24} />
+                ),
+                }}/>
     </HomeTab.Navigator>
   );
 };
@@ -62,7 +75,14 @@ export default function HomeScreen() {
       <Ionicons name={focused ? 'search-sharp' : 'search-outline'} color={color} size={24} />
       ),
        }}/>
-      <MainTab.Screen name="Profile" component={UserScreen} />
+      <MainTab.Screen name="Profile" component={UserScreen}
+      options={{
+          title: 'Profile',
+          tabBarIcon: ({ color, focused }) => (
+          <Ionicons name={focused ? 'person-sharp' : 'person-outline'} color={color} size={24} />
+          ),
+          }}
+      />
 
     </MainTab.Navigator>
   );
@@ -84,3 +104,18 @@ const styles = StyleSheet.create({
     color: '#fff',
   },
 });
+
+// screenOptions should be defined separately
+const screenOptions = {
+  tabBarActiveTintColor: '#ffd33d',
+  headerStyle: {
+    backgroundColor: '#25292e',
+  },
+  headerShadowVisible: false,
+  headerTintColor: '#fff',
+  tabBarStyle: {
+    backgroundColor: '#25292e',
+  },
+};
+
+
