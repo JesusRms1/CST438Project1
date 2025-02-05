@@ -11,31 +11,44 @@ const SearchPage = () => {
   const [number, onChangeNumber] = React.useState('');
   // const [checked, setChecked] = React.useState(true); 
   const [checkedItems, setCheckedItems] = React.useState<Record<string, boolean>>({});
-
-
   const items: string[] = ["American", "Mexican", "Japanese"];
+  const [selectedValue, setSelectedValue] = React.useState<string | null>(null); // Store the selected value
 
-  const CollapseFilter = () => {
+  const CollapseFilter = () => { //stuff that go inside the Panel?
     const [isOpen, setIsOpen] = React.useState(false);
     const togglePanel = () => setIsOpen(!isOpen);
     
-    const [selectedIndex, setIndex] = React.useState<number | null>(null); // For radio button selection
-    const handleCheckboxPress = (title: string) => {
-      console.log('Checkbox clicked:', title);
-    };
-    const toggleCheckbox = (name:string) => { //react n expo equivalent of checkbox value
-      setCheckedItems((prev)=> ({
-        ...prev,
-        [name]:!prev[name],
-      }));
+    const [selectedIndex, setIndex] = React.useState<number | null>(null); // For radio selection
+    const [checkedItems, setCheckedItems] = React.useState<Record<string, boolean>>({});
+    const [number, setNumber] = React.useState(""); //for user input?
+    //search stuff---
+    const onChangeNumber =(text:string) =>{
+      setNumber(text);
     }
-    // const [checkedItems, setCheckedItems] = React.useState<Record<string, boolean>>(
-    //   items.reduce((acc, item) => ({ ...acc, [item]: false }), {})
-    // );
+    const handleSubmit =()=>{
+      console.log("User input: ", number);
+    }
+    //checkbox/radio stuff---
+    const handleRadioSelect = (index: number, title: string) => {
+      setIndex(index); 
+      setSelectedValue(title); 
+      console.log('Radio button selected:', title);
+
+      // if (title === "Mexican") {
+      //   Alert.alert("Selection", "You selected Mexican!", [{ text: "OK" }]);
+      // }
+      
+      setCheckedItems({
+        [title]: true, 
+      });
+    };
     
     const clearFilters = () => {
-      setCheckedItems(items.reduce((acc, item) => ({ ...acc, [item]: false }), {}));
+      setCheckedItems(items.reduce((acc, item) => ({ ...acc, [item]: false }), {})); // Uncheck all
+      setIndex(null); // Reset radio button selection
+      setSelectedValue(null); // Clear stored value
     };
+    
     
   
 
@@ -67,8 +80,7 @@ const SearchPage = () => {
                 checked={selectedIndex === index}
                 onPress={() => 
                   {setIndex(index);
-                  handleCheckboxPress(item);
-                  // toggleCheckbox(item);//this causes panel to close
+                  handleRadioSelect(index,item) // filter has to be clicked twice to work...
                 }}
                 iconType="material-community"
                 checkedIcon="checkbox-marked"
@@ -99,7 +111,19 @@ const SearchPage = () => {
         <View style={styles.buttContainer}>
           <Button
             title="Search"
-            onPress={() => Alert.alert('Simple Button pressed')}
+            onPress={() => {
+              if (number.trim() !== "") {
+                Alert.alert(
+                  `Entered recipe: ${number}\n` +
+                  `Filter: ${selectedValue || 'None'}\n`
+                );
+              } else if(selectedValue !==null){
+                Alert.alert(`Filter: ${selectedValue}\n`)
+              }
+              else{
+                Alert.alert("Please enter a recipe name!");
+              }
+            }}
           />
         </View>
         {/* Render CollapseFilter component */}
@@ -151,10 +175,10 @@ const styles = StyleSheet.create({
   },
   floatingButton: {
     position: 'absolute',
-    bottom: 20, // Adjust distance from bottom
-    right: 20, // Adjust distance from right
-    borderRadius: 30, // Optional: rounded corners
-    overflow: 'hidden', // Ensures button styling stays clean
+    bottom: 20, 
+    right: 20, 
+    borderRadius: 30, 
+    overflow: 'hidden', 
   }
 });
 
