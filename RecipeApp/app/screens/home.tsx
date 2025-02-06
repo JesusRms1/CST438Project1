@@ -7,8 +7,8 @@ import { Ionicons } from '@expo/vector-icons';
 import ProfileScreen from './about';
 import SearchScreen from './search';
 import SettingsScreen from './settings';
-import Stuff from './DaHouse/owner';
-import Saved from './DaHouse/stolen';
+import Stuff from './owner';
+import Saved from './stolen';
 
 // Create Tab Navigators
 const MainTab = createBottomTabNavigator();
