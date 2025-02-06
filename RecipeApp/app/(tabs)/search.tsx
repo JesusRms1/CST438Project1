@@ -3,11 +3,14 @@ import { Text, View, StyleSheet, TextInput, Button, Alert, TouchableOpacity, Scr
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 // import Checkbox from '@react-native-community/checkbox';
 import { CheckBox } from 'react-native-elements';
+//idk
+import RecipeComponent from '@/components/recipe_component';
+import { recipes } from '@/data/temp_recipe';
 
 
 
 
-const SearchPage = () => {
+const SearchPage =  ({ navigation }: any) => {
   const [number, onChangeNumber] = React.useState('');
   // const [checked, setChecked] = React.useState(true); 
   const [checkedItems, setCheckedItems] = React.useState<Record<string, boolean>>({});
@@ -50,10 +53,6 @@ const SearchPage = () => {
     };
     
     
-  
-
-    
-
     return (
       <ScrollView>
         <TouchableOpacity onPress={togglePanel} style={styles.fakeButton}>
@@ -112,6 +111,7 @@ const SearchPage = () => {
           <Button
             title="Search"
             onPress={() => {
+              // make thing to take the filter and text input for search results
               if (number.trim() !== "") {
                 Alert.alert(
                   `Entered recipe: ${number}\n` +
@@ -128,6 +128,11 @@ const SearchPage = () => {
         </View>
         {/* Render CollapseFilter component */}
         <CollapseFilter />
+        <ScrollView>
+                {recipes.map((recipe, index) => (
+                  <RecipeComponent key={index} recipe={recipe} index={index} />
+                ))}
+              </ScrollView> 
       </SafeAreaView>
     </SafeAreaProvider>
   );
