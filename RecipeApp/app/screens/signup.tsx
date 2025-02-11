@@ -6,15 +6,6 @@ const SignupScreen = ({ navigation }: any) => {
   const [password, setPassword] = useState('');
   
 
-<<<<<<< HEAD
-=======
-<<<<<<< Updated upstream:RecipeApp/app/signup.tsx
-  const loggedIn = () => {
-<<<<<<<< HEAD:RecipeApp/app/signup.tsx
-      console.log("Navigate to Home Screen");
-    // Add directions to home page
-=======
->>>>>>> main
   const loggedIn = async () => {
     if (!username || !password){
       alert("Please fill in all fields.");
@@ -46,14 +37,6 @@ const SignupScreen = ({ navigation }: any) => {
 
         
    
-<<<<<<< HEAD
-=======
->>>>>>> Stashed changes:RecipeApp/app/screens/signup.tsx
-========
-        navigation.navigate("Home");
-    // Navigate to home screen (you can configure this later)
->>>>>>>> main:RecipeApp/app/screens/signup.tsx
->>>>>>> main
   };
 
   return (

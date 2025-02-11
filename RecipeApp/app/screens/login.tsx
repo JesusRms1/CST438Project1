@@ -5,18 +5,6 @@ const AccountScreen = ({ navigation }: any) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-<<<<<<< HEAD:RecipeApp/app/login.tsx
-<<<<<<< Updated upstream:RecipeApp/app/login.tsx
-<<<<<<< Updated upstream:RecipeApp/app/login.tsx
-<<<<<<< Updated upstream:RecipeApp/app/login.tsx
-<<<<<<< Updated upstream:RecipeApp/app/login.tsx
-=======
-=======
->>>>>>> Stashed changes:RecipeApp/app/screens/login.tsx
-=======
->>>>>>> Stashed changes:RecipeApp/app/screens/login.tsx
-=======
->>>>>>> Stashed changes:RecipeApp/app/screens/login.tsx
   const loggedIn = async () => {
     if(!username || !password){
       alert("Please Enter Username and Password");
@@ -50,18 +38,6 @@ const AccountScreen = ({ navigation }: any) => {
       alert("An error occurred. Please try again.");
     }
     
-  };
-
->>>>>>> Stashed changes:RecipeApp/app/screens/login.tsx
-  const Signup = () => {
-    console.log("Navigate to Signup Screen");
-    // Add directions to signup page
-  };
-=======
->>>>>>> main:RecipeApp/app/screens/login.tsx
-  const loggedIn = () => {
-    navigation.navigate("Home");
-    // Navigate to home screen (you can configure this later)
   };
 
   const Signup = () => {
