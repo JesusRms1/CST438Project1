@@ -6,7 +6,10 @@ const AccountScreen = () => {
   const [password, setPassword] = useState('');
 
 <<<<<<< Updated upstream:RecipeApp/app/login.tsx
+<<<<<<< Updated upstream:RecipeApp/app/login.tsx
 =======
+=======
+>>>>>>> Stashed changes:RecipeApp/app/screens/login.tsx
   const loggedIn = async () => {
     if(!username || !password){
       alert("Please Enter Username and Password");

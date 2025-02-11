@@ -4,10 +4,39 @@ import React, { useState } from 'react';
 const SignupScreen = ({ navigation }: any) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  
 
-  const loggedIn = () => {
-        navigation.navigate("Home");
-    // Navigate to home screen (you can configure this later)
+  const loggedIn = async () => {
+    if (!username || !password){
+      alert("Please fill in all fields.");
+      return;
+
+    }
+  
+
+    try {
+      const response = await fetch("http://localhost:3001/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password }),
+      });
+
+        const data = await response.json();
+        if(response.ok){
+          alert("User is now registered");
+          navigation.navigate("Home");
+           // Navigate to home screen (you can configure this later)
+        }
+        else  {
+          alert(data.message || "Signup failed. Try again.");
+        }
+      } catch (error) {
+        console.error("Signup error:", error);
+        alert("An error occurred. Please try again.");
+      }
+
+        
+   
   };
 
   return (
