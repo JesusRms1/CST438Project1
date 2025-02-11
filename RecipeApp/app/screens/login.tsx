@@ -1,10 +1,11 @@
 import { Text, View, TextInput, TouchableOpacity, StyleSheet } from "react-native";
 import React, { useState } from 'react';
 
-const AccountScreen = () => {
+const AccountScreen = ({ navigation }: any) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
+<<<<<<< HEAD:RecipeApp/app/login.tsx
 <<<<<<< Updated upstream:RecipeApp/app/login.tsx
 <<<<<<< Updated upstream:RecipeApp/app/login.tsx
 <<<<<<< Updated upstream:RecipeApp/app/login.tsx
@@ -56,10 +57,17 @@ const AccountScreen = () => {
     console.log("Navigate to Signup Screen");
     // Add directions to signup page
   };
+=======
+>>>>>>> main:RecipeApp/app/screens/login.tsx
   const loggedIn = () => {
-      console.log("Navigate to Home Screen");
-    // Add directions to home page
+    navigation.navigate("Home");
+    // Navigate to home screen (you can configure this later)
   };
+
+  const Signup = () => {
+    navigation.navigate("Signup"); // Navigate to Signup screen
+  };
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Login</Text>
