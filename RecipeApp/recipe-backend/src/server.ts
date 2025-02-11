@@ -17,7 +17,11 @@ const db = mysql.createConnection({
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
     password: "1234", // Replace with your actual MySQL password
+=======
+    password: "1234", 
+>>>>>>> Stashed changes
 =======
     password: "1234", 
 >>>>>>> Stashed changes

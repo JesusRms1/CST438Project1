@@ -8,7 +8,10 @@ const AccountScreen = () => {
 <<<<<<< Updated upstream:RecipeApp/app/login.tsx
 <<<<<<< Updated upstream:RecipeApp/app/login.tsx
 <<<<<<< Updated upstream:RecipeApp/app/login.tsx
+<<<<<<< Updated upstream:RecipeApp/app/login.tsx
 =======
+=======
+>>>>>>> Stashed changes:RecipeApp/app/screens/login.tsx
 =======
 >>>>>>> Stashed changes:RecipeApp/app/screens/login.tsx
 =======
