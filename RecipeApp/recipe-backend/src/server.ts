@@ -14,7 +14,11 @@ app.use(express.json());
 const db = mysql.createConnection({
     host: "localhost",
     user: "root",
+<<<<<<< Updated upstream
     password: "1234", // Replace with your actual MySQL password
+=======
+    password: "1234", 
+>>>>>>> Stashed changes
     database: "recipe_app",
 });
 

@@ -1,49 +1,15 @@
 import { Text, View, TextInput, TouchableOpacity, StyleSheet } from "react-native";
 import React, { useState } from 'react';
 
-const AccountScreen = () => {
+const SignupScreen = ({ navigation }: any) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  
 
-<<<<<<< Updated upstream:RecipeApp/app/signup.tsx
   const loggedIn = () => {
-      console.log("Navigate to Home Screen");
-    // Add directions to home page
-=======
-  const loggedIn = async () => {
-    if (!username || !password){
-      alert("Please fill in all fields.");
-      return;
-
-    }
-  
-
-    try {
-      const response = await fetch("http://localhost:3001/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password }),
-      });
-
-        const data = await response.json();
-        if(response.ok){
-          alert("User is now registered");
-          navigation.navigate("Home");
-           // Navigate to home screen (you can configure this later)
-        }
-        else  {
-          alert(data.message || "Signup failed. Try again.");
-        }
-      } catch (error) {
-        console.error("Signup error:", error);
-        alert("An error occurred. Please try again.");
-      }
-
-        
-   
->>>>>>> Stashed changes:RecipeApp/app/screens/signup.tsx
+        navigation.navigate("Home");
+    // Navigate to home screen (you can configure this later)
   };
+
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Sign Up</Text>
@@ -64,14 +30,17 @@ const AccountScreen = () => {
       />
       <Text style={styles.UserIn}>Re-Enter Password:</Text>
       <TextInput
-       style={styles.input}
-       placeholder="Enter Password"
-       value={password}
-       onChangeText={setPassword}
-       secureTextEntry
+        style={styles.input}
+        placeholder="Enter Password"
+        value={password}
+        onChangeText={setPassword}
+        secureTextEntry
       />
       <TouchableOpacity style={styles.button} onPress={loggedIn}>
         <Text style={styles.buttonTxt}>Sign Up</Text>
+      </TouchableOpacity>
+      <TouchableOpacity onPress={() => navigation.goBack()}>
+        <Text style={styles.signup}>Already have an account? Log In</Text>
       </TouchableOpacity>
     </View>
   );
@@ -129,4 +98,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AccountScreen;
+export default SignupScreen;

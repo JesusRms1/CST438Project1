@@ -5,6 +5,44 @@ const AccountScreen = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
+<<<<<<< Updated upstream:RecipeApp/app/login.tsx
+=======
+  const loggedIn = async () => {
+    if(!username || !password){
+      alert("Please Enter Username and Password");
+      return;
+
+    }
+
+    try {
+      const response = await fetch("http://localhost:3001/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password }),
+      });
+
+      interface loginResponse{
+      token?: string;
+      username?: string;
+      message?: string;
+      }
+      
+      const data: loginResponse = await response.json();
+      if (response.ok && data.username){
+        alert (`Welcome ${data.username}`);
+        navigation.navigate("Home");
+    // Navigate to home screen (you can configure this later)
+      }else {
+        alert(data.message || "Login failed. Please try again.");
+      }
+    } catch (error) {
+      console.error("Login error:", error);
+      alert("An error occurred. Please try again.");
+    }
+    
+  };
+
+>>>>>>> Stashed changes:RecipeApp/app/screens/login.tsx
   const Signup = () => {
     console.log("Navigate to Signup Screen");
     // Add directions to signup page
