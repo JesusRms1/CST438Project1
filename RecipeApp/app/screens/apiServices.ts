@@ -30,6 +30,7 @@ export const api = {
   getMealsByCategory: (category: string) => fetchAPI<{ meals: any[] }>(`filter.php?c=${category}`),
   getMealById: (id: string) => fetchAPI<{ meals: any[] }>(`lookup.php?i=${id}`),
   getRandomMeal: () => fetchAPI<{ meals: any[] }>('random.php'),
+  getMealsByName: (name: string) => fetchAPI<{ meals: any[] }>(`filter.php?c=${name}`),
 };
 
 export default api;

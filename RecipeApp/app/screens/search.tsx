@@ -6,11 +6,16 @@ import RecipeComponent from '@/components/recipe_component';
 import api from './apiServices';
 
 const SearchPage = () => {
-  const [number, setNumber] = useState('');
+  const [name, setName] = useState('');
   const [selectedValue, setSelectedValue] = useState<string | null>(null);
   const [recipes, setRecipes] = useState<any[]>([]);
 
+  const clearRecipes = () => {
+      setRecipes([]);
+      };
+
   const fetchMealsByCategory = async (category: string) => {
+      clearRecipes();
     try {
       const response = await api.getMealsByCategory(category);
       setRecipes(response.meals);
@@ -18,6 +23,20 @@ const SearchPage = () => {
       Alert.alert('Error', err.message);
     }
   };
+  const fetchMealsByName = async (name: string) => {
+      clearRecipes();
+      try {
+        const response = await api.getMealsByName(name);
+        if (response && response.meals && response.meals.length > 0) {
+          setRecipes(response.meals);
+        } else {
+          Alert.alert('No dish found with that name!');
+          setRecipes([]);
+        }
+      } catch (err) {
+        Alert.alert('Error', err.message);
+      }
+    };
 
   const handleSearch = async () => {
     if (selectedValue) {
@@ -26,28 +45,19 @@ const SearchPage = () => {
       Alert.alert("Please select a category!");
     }
   };
+  const handleSearchName = async () => {
+      if (name) {
+        await fetchMealsByName(name);
+      } else {
+        Alert.alert("Please input a dish!");
+      }
+    };
 
   const CollapseFilter = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [selectedIndex, setIndex] = useState<number | null>(null);
-    const items: string[] = [
-                              "Beef",
-                              "Chicken",
-                              "Dessert",
-                              "Lamb",
-                              "Miscellaneous",
-                              "Pasta",
-                              "Pork",
-                              "Seafood",
-                              "Side",
-                              "Starter",
-                              "Vegan",
-                              "Vegetarian",
-                              "Breakfast",
-                              "Goat"
-                            ]
-;
-
+    const items: string[] = ["Beef","Chicken", "Dessert", "Lamb", "Miscellaneous",
+    "Pasta", "Pork","Seafood", "Side", "Starter", "Vegan", "Vegetarian", "Breakfast", "Goat"];
     const handleRadioSelect = (index: number, title: string) => {
       setIndex(index);
       setSelectedValue(title);
@@ -91,13 +101,13 @@ const SearchPage = () => {
       <SafeAreaView style={styles.barContainer}>
         <TextInput
           style={styles.input}
-          onChangeText={setNumber}
-          value={number}
+          onChangeText={setName}
+          value={name}
           placeholder="Enter Recipe Name!"
           keyboardType="default"
         />
         <View style={styles.buttContainer}>
-          <Button title="Search" onPress={handleSearch} />
+          <Button title="Search" onPress={handleSearchName} />
         </View>
         <CollapseFilter />
         <ScrollView>
