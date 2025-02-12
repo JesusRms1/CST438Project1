@@ -1,6 +1,6 @@
 import { Text, View, TextInput, TouchableOpacity, StyleSheet } from "react-native";
 import React, { useState } from 'react';
-
+import { loginUser } from './recipeappDB';
 const AccountScreen = ({ navigation }: any) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -11,34 +11,16 @@ const AccountScreen = ({ navigation }: any) => {
       return;
 
     }
-
-    try {
-      const response = await fetch("http://localhost:3001/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password }),
-      });
-
-      interface loginResponse{
-      token?: string;
-      username?: string;
-      message?: string;
-      }
-      
-      const data: loginResponse = await response.json();
-      if (response.ok && data.username){
-        alert (`Welcome ${data.username}`);
+    const isLogin = await loginUser(username, password);
+    if (isLogin) {
+        alert(`Welcome, ${username}!`);
         navigation.navigate("Home");
-    // Navigate to home screen (you can configure this later)
-      }else {
-        alert(data.message || "Login failed. Please try again.");
-      }
-    } catch (error) {
-      console.error("Login error:", error);
-      alert("An error occurred. Please try again.");
+    } else {
+       alert("Invalid username or password. Try again.");
     }
-    
-  };
+};
+
+   
 
   const Signup = () => {
     navigation.navigate("Signup"); // Navigate to Signup screen

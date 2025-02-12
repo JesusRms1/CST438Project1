@@ -1,10 +1,14 @@
 import { Text, View, TextInput, TouchableOpacity, StyleSheet } from "react-native";
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import {createTables, insertUser } from './recipeappDB';
 
 const SignupScreen = ({ navigation }: any) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   
+  useEffect(() => {
+    createTables(); 
+}, []);
 
   const loggedIn = async () => {
     if (!username || !password){
@@ -12,30 +16,16 @@ const SignupScreen = ({ navigation }: any) => {
       return;
 
     }
+  const isSignUp = await insertUser(username, password);
+    if(isSignUp){
+      alert("User is now registered!");
+      navigation.navigate("Home");
+
+    }
+    else {
+      alert("Error. Try again");
+    }
   
-
-    try {
-      const response = await fetch("http://localhost:3001/register", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password }),
-      });
-
-        const data = await response.json();
-        if(response.ok){
-          alert("User is now registered");
-          navigation.navigate("Home");
-           // Navigate to home screen (you can configure this later)
-        }
-        else  {
-          alert(data.message || "Signup failed. Try again.");
-        }
-      } catch (error) {
-        console.error("Signup error:", error);
-        alert("An error occurred. Please try again.");
-      }
-
-        
    
   };
 
