@@ -1,17 +1,11 @@
 import * as SQLite from 'expo-sqlite';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Platform } from 'react-native';
 
-let db: SQLite.SQLiteDatabase | null = null;
+let db: SQLite.SQLiteDatabase | null = null; 
 
-// Function to Open Database (Only for iOS & Android)
+// Function to Open Database
 export const setupDatabase = async () => {
-    if (Platform.OS === 'web') {
-        console.warn("Using AsyncStorage for Web, SQLite for mobile.");
-        return null; 
-    }
     if (!db) {
-        db = await SQLite.openDatabaseAsync('recipeDB');
+        db = await SQLite.openDatabaseAsync('recipeDB'); 
         console.log("Database opened");
     }
     return db;
@@ -19,8 +13,7 @@ export const setupDatabase = async () => {
 
 // Create Users Table
 export const createTables = async () => {
-    const database = await setupDatabase();
-    if (!database) return; 
+    const database = await setupDatabase(); 
     await database.execAsync(`
         PRAGMA journal_mode = WAL;
         CREATE TABLE IF NOT EXISTS users (
@@ -34,19 +27,7 @@ export const createTables = async () => {
 
 // Insert User (Sign-Up)
 export const insertUser = async (username: string, password: string) => {
-    if (Platform.OS === 'web') {
-        try {
-            await AsyncStorage.setItem(`user:${username}`, JSON.stringify({ username, password }));
-            return true;
-        } catch (error) {
-            console.error("AsyncStorage Insert Error:", error);
-            return false;
-        }
-    }
-
     const database = await setupDatabase();
-    if (!database) return false;
-    
     try {
         await database.runAsync(
             'INSERT INTO users (username, password) VALUES (?, ?);',
@@ -55,28 +36,14 @@ export const insertUser = async (username: string, password: string) => {
         );
         return true;
     } catch (error) {
-        console.error("SQLite Insert Error:", error);
+        console.error("Error inserting user:", error);
         return false;
     }
 };
 
 // Login User
 export const loginUser = async (username: string, password: string) => {
-    if (Platform.OS === 'web') {
-        try {
-            const userData = await AsyncStorage.getItem(`user:${username}`);
-            if (!userData) return false;
-            const user = JSON.parse(userData);
-            return user.password === password;
-        } catch (error) {
-            console.error("AsyncStorage Login Error:", error);
-            return false;
-        }
-    }
-
     const database = await setupDatabase();
-    if (!database) return false;
-
     try {
         const user = await database.getFirstAsync(
             'SELECT * FROM users WHERE username = ? AND password = ?;',
@@ -85,15 +52,14 @@ export const loginUser = async (username: string, password: string) => {
         );
         return user ? true : false;
     } catch (error) {
-        console.error("SQLite Login Error:", error);
+        console.error("Login error:", error);
         return false;
     }
 };
 
-// Get All Users 
+// Get All Users
 export const getUsers = async () => {
     const database = await setupDatabase();
-    if (!database) return [];
     try {
         return await database.getAllAsync('SELECT id, username FROM users;') || [];
     } catch (error) {
