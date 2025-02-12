@@ -25,6 +25,19 @@ export const createTables = async () => {
     console.log("Users table created");
 };
 
+  // Create Recipe Table
+  export const recipeTable = async() => {
+    const database = await setupDatabase();
+    await database.execAsync(`
+         PRAGMA journal_mode = WAL;
+        CREATE TABLE IF NOT EXISTS recipes (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            user_id INTEGER NOT NULL,
+            recipe_id INTEGER NOT NULL
+        );
+    `);
+    console.log("Recipes table created");
+  }
 // Insert User (Sign-Up)
 export const insertUser = async (username: string, password: string) => {
     const database = await setupDatabase();
