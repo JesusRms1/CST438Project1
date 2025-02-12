@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet ,Image} from 'react-native';
 
 type Recipe = {
   Nationality: string;
@@ -17,19 +17,46 @@ const RecipeComponent: React.FC<CardProps> = ({ recipe, index }) => {
     <View style={styles.card}>
       <Text style={styles.cardHeader}>Recipe #{index + 1}</Text>
       <View style={styles.cardBody}>
-        <Text style={styles.cardTitle}>Name: {recipe.Name}</Text>
-        <Text style={styles.cardTitle}>Nationality: {recipe.Nationality}</Text>
-        <Text style={styles.cardTitle}>Protein: {recipe.Protein}</Text>
+        <Image source={{ uri: recipe.strMealThumb }} style={styles.recipeImage} />
+        <View style={styles.textContainer}>
+          <Text style={styles.cardTitle}>Name: {recipe.strMeal}</Text>
+          <Text style={styles.cardTitle}>ID: {recipe.idMeal}</Text>
+        </View>
       </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  card: { backgroundColor: '#fff', padding: 15, margin: 10 },
-  cardHeader: { fontSize: 18, fontWeight: 'bold' },
-  cardBody: { marginTop: 5 },
-  cardTitle: { fontSize: 16, color: '#666' }
+  card: {
+    backgroundColor: '#fff',
+    padding: 15,
+    margin: 10,
+    borderRadius: 8,
+  },
+  cardHeader: {
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  cardBody: {
+    marginTop: 5,
+    flexDirection: 'row',
+    alignItems: 'flex-start',
+  },
+  cardTitle: {
+    fontSize: 16,
+    color: '#666',
+    marginBottom: 5,
+  },
+  recipeImage: {
+    width: 100,
+    height: 100,
+    borderRadius: 8,
+    marginRight: 15,
+  },
+  textContainer: {
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+  },
 });
-
 export default RecipeComponent;

@@ -1,6 +1,8 @@
 import { Text, View, TextInput, TouchableOpacity, StyleSheet } from "react-native";
 import React, { useState } from 'react';
 import { loginUser } from './recipeappDB';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 const AccountScreen = ({ navigation }: any) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -9,21 +11,24 @@ const AccountScreen = ({ navigation }: any) => {
     if(!username || !password){
       alert("Please Enter Username and Password");
       return;
-
     }
+
     const isLogin = await loginUser(username, password);
     if (isLogin) {
-        alert(`Welcome, ${username}!`);
-        navigation.navigate("Home");
+        try {
+          await AsyncStorage.setItem('username', username);
+          alert(`Welcome, ${username}!`);
+          navigation.navigate("Home");
+        } catch (error) {
+          console.error('Error saving session', error);
+        }
     } else {
        alert("Invalid username or password. Try again.");
     }
-};
-
-   
+  };
 
   const Signup = () => {
-    navigation.navigate("Signup"); // Navigate to Signup screen
+    navigation.navigate("Signup");
   };
 
   return (

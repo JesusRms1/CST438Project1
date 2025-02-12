@@ -80,3 +80,13 @@ export const getUsers = async () => {
         return [];
     }
 };
+
+export const getUser = async (username: string) => {
+    const database = await setupDatabase();
+    try {
+        return await database.getAllAsync('SELECT * FROM users WHERE username = ?;',username) || [];
+    } catch (error) {
+        console.error("Error fetching users:", error);
+        return [];
+    }
+};
