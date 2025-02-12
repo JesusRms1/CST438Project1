@@ -1,98 +1,87 @@
-import React from 'react'; 
+import React, { useState } from 'react';
 import { Text, View, StyleSheet, TextInput, Button, Alert, TouchableOpacity, ScrollView } from 'react-native';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
-// import Checkbox from '@react-native-community/checkbox';
 import { CheckBox } from 'react-native-elements';
-//idk
 import RecipeComponent from '@/components/recipe_component';
-import { recipes } from '@/data/temp_recipe';
+import api from './apiServices';
 
+const SearchPage = () => {
+  const [number, setNumber] = useState('');
+  const [selectedValue, setSelectedValue] = useState<string | null>(null);
+  const [recipes, setRecipes] = useState<any[]>([]);
 
-
-
-const SearchPage =  ({ navigation }: any) => {
-  const [number, onChangeNumber] = React.useState('');
-  // const [checked, setChecked] = React.useState(true); 
-  const [checkedItems, setCheckedItems] = React.useState<Record<string, boolean>>({});
-  const items: string[] = ["American", "Mexican", "Japanese"];
-  const [selectedValue, setSelectedValue] = React.useState<string | null>(null); // Store the selected value
-
-  const CollapseFilter = () => { //stuff that go inside the Panel?
-    const [isOpen, setIsOpen] = React.useState(false);
-    const togglePanel = () => setIsOpen(!isOpen);
-    
-    const [selectedIndex, setIndex] = React.useState<number | null>(null); // For radio selection
-    const [checkedItems, setCheckedItems] = React.useState<Record<string, boolean>>({});
-    const [number, setNumber] = React.useState(""); //for user input?
-    //search stuff---
-    const onChangeNumber =(text:string) =>{
-      setNumber(text);
+  const fetchMealsByCategory = async (category: string) => {
+    try {
+      const response = await api.getMealsByCategory(category);
+      setRecipes(response.meals);
+    } catch (err) {
+      Alert.alert('Error', err.message);
     }
-    const handleSubmit =()=>{
-      console.log("User input: ", number);
+  };
+
+  const handleSearch = async () => {
+    if (selectedValue) {
+      await fetchMealsByCategory(selectedValue);
+    } else {
+      Alert.alert("Please select a category!");
     }
-    //checkbox/radio stuff---
+  };
+
+  const CollapseFilter = () => {
+    const [isOpen, setIsOpen] = useState(false);
+    const [selectedIndex, setIndex] = useState<number | null>(null);
+    const items: string[] = [
+                              "Beef",
+                              "Chicken",
+                              "Dessert",
+                              "Lamb",
+                              "Miscellaneous",
+                              "Pasta",
+                              "Pork",
+                              "Seafood",
+                              "Side",
+                              "Starter",
+                              "Vegan",
+                              "Vegetarian",
+                              "Breakfast",
+                              "Goat"
+                            ]
+;
+
     const handleRadioSelect = (index: number, title: string) => {
-      setIndex(index); 
-      setSelectedValue(title); 
-      console.log('Radio button selected:', title);
+      setIndex(index);
+      setSelectedValue(title);
+      fetchMealsByCategory(title);
+    };
 
-      // if (title === "Mexican") {
-      //   Alert.alert("Selection", "You selected Mexican!", [{ text: "OK" }]);
-      // }
-      
-      setCheckedItems({
-        [title]: true, 
-      });
-    };
-    
     const clearFilters = () => {
-      setCheckedItems(items.reduce((acc, item) => ({ ...acc, [item]: false }), {})); // Uncheck all
-      setIndex(null); // Reset radio button selection
-      setSelectedValue(null); // Clear stored value
+      setSelectedValue(null);
+      setIndex(null);
+      setRecipes([]);
     };
-    
-    
+
     return (
       <ScrollView>
-        <TouchableOpacity onPress={togglePanel} style={styles.fakeButton}>
+        <TouchableOpacity onPress={() => setIsOpen(!isOpen)} style={styles.fakeButton}>
           <Text style={styles.fakeText}>{isOpen ? 'Close Filter Panel' : 'Open Filter Panel'}</Text>
         </TouchableOpacity>
         {isOpen && (
-          <View style={{ marginTop: 10, borderWidth: 1, borderColor: '#000', padding: 10, margin: 12, backgroundColor: '#c2ecff',
-            flexDirection: 'row', alignItems: 'center', flexWrap: 'wrap'
-           }}>
-            <Text>Collapsible Panel Content{"\n"}</Text>
-            <Text>This is the content inside the collapsible panel. {"\n"}</Text>
-            <View style={styles.floatingButton}>
-            <Button 
-            title="Clear Filters"
-            onPress={()=>clearFilters()}
-            />
-            </View>
-
-            {/* Looping through items to render checkboxes */}
-            {/* does NOT close when switching to other tabs (Home,about,settings) */}
+          <View style={styles.filterPanel}>
+            <Button title="Clear Filters" onPress={clearFilters} />
             {items.map((item, index) => (
               <CheckBox
                 key={index}
                 checked={selectedIndex === index}
-                onPress={() => 
-                  {setIndex(index);
-                  handleRadioSelect(index,item) // filter has to be clicked twice to work...
-                }}
+                onPress={() => handleRadioSelect(index, item)}
                 iconType="material-community"
                 checkedIcon="checkbox-marked"
                 uncheckedIcon="checkbox-blank-outline"
                 checkedColor="red"
-                title={item} 
-                
+                title={item}
               />
             ))}
           </View>
         )}
-          {/* Debugging: Show selected values */}
-        <Text style={styles.text}>Selected: {JSON.stringify(checkedItems, null, 2)}</Text>
       </ScrollView>
     );
   };
@@ -102,37 +91,20 @@ const SearchPage =  ({ navigation }: any) => {
       <SafeAreaView style={styles.barContainer}>
         <TextInput
           style={styles.input}
-          onChangeText={onChangeNumber}
+          onChangeText={setNumber}
           value={number}
-          placeholder="Enter Recipe name!"
+          placeholder="Enter Recipe Name!"
           keyboardType="default"
         />
         <View style={styles.buttContainer}>
-          <Button
-            title="Search"
-            onPress={() => {
-              // make thing to take the filter and text input for search results
-              if (number.trim() !== "") {
-                Alert.alert(
-                  `Entered recipe: ${number}\n` +
-                  `Filter: ${selectedValue || 'None'}\n`
-                );
-              } else if(selectedValue !==null){
-                Alert.alert(`Filter: ${selectedValue}\n`)
-              }
-              else{
-                Alert.alert("Please enter a recipe name!");
-              }
-            }}
-          />
+          <Button title="Search" onPress={handleSearch} />
         </View>
-        {/* Render CollapseFilter component */}
         <CollapseFilter />
         <ScrollView>
-                {recipes.map((recipe, index) => (
-                  <RecipeComponent key={index} recipe={recipe} index={index} />
-                ))}
-              </ScrollView> 
+          {recipes.map((recipe, index) => (
+            <RecipeComponent key={index} recipe={recipe} index={index} />
+          ))}
+        </ScrollView>
       </SafeAreaView>
     </SafeAreaProvider>
   );
@@ -147,15 +119,9 @@ const styles = StyleSheet.create({
     marginHorizontal: 12,
     margin: 5,
   },
-  container: {
-    flex: 1,
-    backgroundColor: '#25292e',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   text: {
     color: '#fff',
-    margin:12,
+    margin: 12,
   },
   input: {
     height: 40,
@@ -164,26 +130,30 @@ const styles = StyleSheet.create({
     padding: 10,
     backgroundColor: '#fcf7e8',
   },
-  fakeButton:{
-    backgroundColor: 'blue', 
-    paddingVertical: 12,     
-    paddingHorizontal: 20,     
-    borderRadius: 5,           
-    margin: 10,               
-    alignItems: 'center',  
+  fakeButton: {
+    backgroundColor: 'blue',
+    paddingVertical: 12,
+    paddingHorizontal: 20,
+    borderRadius: 5,
+    margin: 10,
+    alignItems: 'center',
   },
-  fakeText:{
-    color: 'white',            
-    fontSize: 16,             
-    fontWeight: 'bold',       
-    textAlign: 'center', 
+  fakeText: {
+    color: 'white',
+    fontSize: 16,
+    fontWeight: 'bold',
+    textAlign: 'center',
   },
-  floatingButton: {
-    position: 'absolute',
-    bottom: 20, 
-    right: 20, 
-    borderRadius: 30, 
-    overflow: 'hidden', 
+  filterPanel: {
+    marginTop: 10,
+    borderWidth: 1,
+    borderColor: '#000',
+    padding: 10,
+    margin: 12,
+    backgroundColor: '#c2ecff',
+    flexDirection: 'row',
+    alignItems: 'center',
+    flexWrap: 'wrap',
   }
 });
 
