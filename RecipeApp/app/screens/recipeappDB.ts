@@ -122,4 +122,34 @@ export const updateUserInfo = async (id: number, newUsername?: string, newPasswo
         console.error("Error updating user info:", error);
         return false;
     }
+
+};
+
+// insert recipe to user?
+export const addRecipe = async(userId:number,recipeId:number) =>{
+    const database =await setupDatabase();
+    
+    try{
+        await database.runAsync(
+            'INSERT INTO  recipes (user_id,recipe_id) VALUES (?,?)',
+            [userId,recipeId]
+        );
+        console.log(`Recipe ${recipeId} added for user ${userId} inside addRecipe`);
+
+    }catch(error){
+        console.error("Error while adding recipe: ",error);
+        return false;
+    }
+
+};
+
+//get recpies tied to user
+export const getRecipes = async(userId:number)=>{
+    const database = await setupDatabase();
+    try{
+        return await database.getAllAsync(`SELECT * FROM recipes WHERE user_id = ?;`,userId) || [];
+    }catch (error){
+        console.error("Error getting user's recipes:", error);
+        return[];
+    }
 };

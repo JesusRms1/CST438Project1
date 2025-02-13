@@ -1,19 +1,53 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState } from 'react';
 import { Text, View, StyleSheet, TextInput, Button, Alert, TouchableOpacity, ScrollView } from 'react-native';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import { CheckBox } from 'react-native-elements';
 import RecipeComponent from '@/components/recipe_component';
 import api from './apiServices';
+import { addRecipe, getUser, recipeTable } from './recipeappDB';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const SearchPage = () => {
+  //recipe info
   const [name, setName] = useState('');
   const [selectedValue, setSelectedValue] = useState<string | null>(null);
   const [recipes, setRecipes] = useState<any[]>([]);
+  //user info for storing recipe
+    const [username, setUsername] = useState<string | null>(null);
+    const [userDetails, setUserDetails] = useState<any>(null);
+    const [userId, setUserId] =useState<any>(null);
+
+  useEffect(() => {
+    const getUserSession = async () => {
+      const storedUsername = await AsyncStorage.getItem('username');
+      setUsername(storedUsername);
+      if (storedUsername) {
+        const user = await getUser(storedUsername);
+        setUserDetails(user);
+      
+      }
+    };
+
+    getUserSession();
+  }, []);
+
+  //this gets the user id for tables
+  useEffect(() => {
+    if (userDetails && userDetails[0]?.id) {
+      setUserId(userDetails[0]?.id);
+    }
+  }, [userDetails]);  
+
+  //make the recipe table
+    useEffect(() => {
+      recipeTable();
+  }, []);
 
   const clearRecipes = () => {
       setRecipes([]);
       };
 
+  //meal api stuff
   const fetchMealsByCategory = async (category: string) => {
       clearRecipes();
     try {
@@ -44,6 +78,8 @@ const SearchPage = () => {
     } else {
       Alert.alert("Please select a category!");
     }
+ 
+    
   };
   const handleSearchName = async () => {
       if (name) {
@@ -52,6 +88,16 @@ const SearchPage = () => {
         Alert.alert("Please input a dish!");
       }
     };
+    const handleRecipePress = async (recipe ) =>{
+      // console.log('Recipe Pressed:',recipe.idMeal);
+      //get this userId and store this recipe id
+     
+      await addRecipe(userId,recipe.idMeal);
+
+      // console.log(`Saved Recipe ID: ${recipe.idMeal} for User ${userId}`);
+      console.log(`Recipe Id: ${recipe.idMeal}, User ID: ${userId}`);
+
+    }
 
   const CollapseFilter = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -112,7 +158,10 @@ const SearchPage = () => {
         <CollapseFilter />
         <ScrollView>
           {recipes.map((recipe, index) => (
-            <RecipeComponent key={index} recipe={recipe} index={index} />
+            <TouchableOpacity key={index} onPress={()=> handleRecipePress(recipe)}>
+              <RecipeComponent key={index} recipe={recipe} index={index} />
+            </TouchableOpacity>
+            
           ))}
         </ScrollView>
       </SafeAreaView>

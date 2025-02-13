@@ -1,6 +1,7 @@
 import { Text, View, StyleSheet } from 'react-native';
 
 //the screen that will display content saved from OTHER users
+//call from recipe tables and the all recipes that match this user id?
 export default function StolenScreen() {
   return (
     <View style={styles.container}>
