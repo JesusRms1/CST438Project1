@@ -19,7 +19,7 @@ const SignupScreen = ({ navigation }: any) => {
   const isSignUp = await insertUser(username, password);
     if(isSignUp){
       alert("User is now registered!");
-      navigation.navigate("Home");
+      navigation.navigate("Login");
 
     }
     else {
