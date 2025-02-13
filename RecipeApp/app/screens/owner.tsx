@@ -18,7 +18,6 @@ export default function OwnerScreen() {
   //   useEffect(() => {
   //     recipeTable();
   // }, []);
-
   useEffect(() => {
     const getUserSession = async () => {
       const storedUsername = await AsyncStorage.getItem('username');
@@ -85,7 +84,6 @@ export default function OwnerScreen() {
 
   return (
     <ScrollView>
-      
         {apiRecipe.map((recipe, index) => (
           <View key={index}>
             <RecipeComponent key={index} recipe={recipe} index={index} />

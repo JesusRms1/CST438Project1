@@ -15,28 +15,7 @@ const MainTab = createBottomTabNavigator();
 const HomeTab = createBottomTabNavigator();
 const UserTab = createBottomTabNavigator();
 
-// Nested Tab Navigator for Owner
-const HomeMScreen = () => {
-  return (
-    <HomeTab.Navigator screenOptions={{ headerShown: false }}>
-      <HomeTab.Screen name="Your Recipes" component={Stuff}
-      options={{
-                title: 'Recipes',
-                tabBarIcon: ({ color, focused }) => (
-                <Ionicons name={focused ? 'document-text-sharp' : 'document-text-outline'} color={color} size={24} />
-                ),
-                }}
-      />
-      <HomeTab.Screen name="Your Saved Recipes" component={Saved}
-      options={{
-                title: 'Saved',
-                tabBarIcon: ({ color, focused }) => (
-                <Ionicons name={focused ? 'bookmark-sharp' : 'bookmark-outline'} color={color} size={24} />
-                ),
-                }}/>
-    </HomeTab.Navigator>
-  );
-};
+
 const UserScreen = () => {
   return (
     <UserTab.Navigator screenOptions={{ headerShown: false }}>
@@ -61,7 +40,7 @@ const UserScreen = () => {
 export default function HomeScreen() {
   return (
     <MainTab.Navigator screenOptions={{ headerShown: false }}>
-      <MainTab.Screen name="Owner" component={HomeMScreen}
+      <MainTab.Screen name="Owner" component={Stuff}
       options={{
         title: 'Home',
         tabBarIcon: ({ color, focused }) => (
@@ -83,6 +62,7 @@ export default function HomeScreen() {
           ),
           }}
       />
+
 
     </MainTab.Navigator>
   );
