@@ -5,6 +5,9 @@ type Recipe = {
   Nationality: string;
   Name: string;
   Protein: string;
+  strMealThumb: string;
+  strMeal:string;
+  idMeal:string;
 };
 
 type CardProps = {

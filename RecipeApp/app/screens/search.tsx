@@ -1,14 +1,34 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState } from 'react';
 import { Text, View, StyleSheet, TextInput, Button, Alert, TouchableOpacity, ScrollView } from 'react-native';
 import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import { CheckBox } from 'react-native-elements';
 import RecipeComponent from '@/components/recipe_component';
 import api from './apiServices';
+import { addRecipe, getUser } from './recipeappDB';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const SearchPage = () => {
   const [name, setName] = useState('');
   const [selectedValue, setSelectedValue] = useState<string | null>(null);
   const [recipes, setRecipes] = useState<any[]>([]);
+  //user info for storing recipe?
+    const [username, setUsername] = useState<string | null>(null);
+    const [userDetails, setUserDetails] = useState<any>(null);
+    const [userId, setUserId] =useState<any>(null);
+
+  useEffect(() => {
+    const getUserSession = async () => {
+      const storedUsername = await AsyncStorage.getItem('username');
+      setUsername(storedUsername);
+      if (storedUsername) {
+        const user = await getUser(storedUsername);
+        setUserDetails(user);
+        setUserId(userDetails[0]?.id);
+      }
+    };
+
+    getUserSession();
+  }, []);
 
   const clearRecipes = () => {
       setRecipes([]);
@@ -52,6 +72,16 @@ const SearchPage = () => {
         Alert.alert("Please input a dish!");
       }
     };
+    const handleRecipePress = async (recipe ) =>{
+      // console.log('Recipe Pressed:',recipe.idMeal);
+      //get this userId and store this recipe id
+     
+      // await addRecipe(userId,recipe.idMeal);
+
+      // console.log(`Saved Recipe ID: ${recipe.idMeal} for User ${userId}`);
+      console.log(`Recipe Id: ${recipe.idMeal}, User ID: ${userId}`);
+
+    }
 
   const CollapseFilter = () => {
     const [isOpen, setIsOpen] = useState(false);
@@ -112,7 +142,10 @@ const SearchPage = () => {
         <CollapseFilter />
         <ScrollView>
           {recipes.map((recipe, index) => (
-            <RecipeComponent key={index} recipe={recipe} index={index} />
+            <TouchableOpacity key={index} onPress={()=> handleRecipePress(recipe)}>
+              <RecipeComponent key={index} recipe={recipe} index={index} />
+            </TouchableOpacity>
+            
           ))}
         </ScrollView>
       </SafeAreaView>
