@@ -77,3 +77,36 @@ export const getUser = async (username: string) => {
         return [];
     }
 };
+
+export const updateUserInfo = async (id: number, newUsername?: string, newPassword?: string) => {
+    const database = await setupDatabase();
+    try {
+        if (newUsername && newPassword) {
+
+            await database.runAsync(
+                'UPDATE users SET username = ?, password = ? WHERE id = ?;',
+                newUsername,
+                newPassword,
+                id
+            );
+        } else if (newUsername) {
+
+            await database.runAsync(
+                'UPDATE users SET username = ? WHERE id = ?;',
+                newUsername,
+                id
+            );
+        } else if (newPassword) {
+
+            await database.runAsync(
+                'UPDATE users SET password = ? WHERE id = ?;',
+                newPassword,
+                id
+            );
+        }
+        return true;
+    } catch (error) {
+        console.error("Error updating user info:", error);
+        return false;
+    }
+};
