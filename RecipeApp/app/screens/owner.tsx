@@ -60,11 +60,25 @@ export default function OwnerScreen() {
   const fetchMealById = async( id:string) =>{
     try{
       const response = await api.getMealById(id);
-      setApiRecipe(response.meals);
+      if (response.meals) {
+        setApiRecipe((prevRecipes) => [...prevRecipes, ...response.meals]); 
+      }
     }catch(err){
       Alert.alert(`Error`, err.message);
     }
   };
+
+  useEffect(() => {
+    const fetchRecipes = async () => {
+      if (userRecipes.length > 0) {
+        const mealIds = userRecipes.map((recipe) => recipe.recipe_id.toString());
+        for (const id of mealIds) {
+          await fetchMealById(id);
+        }
+      }
+    };
+    fetchRecipes();
+  }, [userRecipes]);
 
 
 
@@ -72,11 +86,9 @@ export default function OwnerScreen() {
   return (
     <ScrollView>
       
-        {userRecipes.map((recipe, index) => (
+        {apiRecipe.map((recipe, index) => (
           <View key={index}>
             <RecipeComponent key={index} recipe={recipe} index={index} />
-            <Text>Recipe ID: {recipe.recipe_id}</Text>
-            <Text>User ID: {recipe.user_id}</Text>
           </View>
         ))}
      
