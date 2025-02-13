@@ -61,7 +61,12 @@ export default function AboutScreen({ navigation }) {
         secureTextEntry
         onChangeText={setNewPassword}
       />
-      <Button title="Update Details" onPress={handleUpdate} />
+      <View style={{ flexDirection: 'column', gap: 10 }}>
+        <Button style={styles.button} title="Update Details" onPress={handleUpdate} />
+                 <Button title="Delete Recipes" onPress={handleUpdate} />
+                 <Button title="Delete Account" onPress={handleUpdate} />
+                 <Button title="Sign out" onPress={handleUpdate} />
+      </View>
     </View>
   );
 }
@@ -88,4 +93,5 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     backgroundColor: '#fff',
   },
+
 });
