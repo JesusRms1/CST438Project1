@@ -1,5 +1,4 @@
 import * as SQLite from 'expo-sqlite';
-import e from 'express';
 
 let db: SQLite.SQLiteDatabase | null = null; 
 
@@ -135,11 +134,22 @@ export const addRecipe = async(userId:number,recipeId:number) =>{
             'INSERT INTO  recipes (user_id,recipe_id) VALUES (?,?)',
             [userId,recipeId]
         );
-        console.log(`Recipe ${recipeId} added for user ${userId}`);
+        console.log(`Recipe ${recipeId} added for user ${userId} inside addRecipe`);
 
     }catch(error){
         console.error("Error while adding recipe: ",error);
         return false;
     }
 
+};
+
+//get recpies tied to user
+export const getRecipes = async(userId:number)=>{
+    const database = await setupDatabase();
+    try{
+        return await database.getAllAsync(`SELECT * FROM recipes WHERE user_id = ?;`,userId) || [];
+    }catch (error){
+        console.error("Error getting user's recipes:", error);
+        return[];
+    }
 };

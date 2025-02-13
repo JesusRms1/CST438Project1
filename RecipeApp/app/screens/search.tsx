@@ -4,14 +4,15 @@ import { SafeAreaView, SafeAreaProvider } from 'react-native-safe-area-context';
 import { CheckBox } from 'react-native-elements';
 import RecipeComponent from '@/components/recipe_component';
 import api from './apiServices';
-import { addRecipe, getUser } from './recipeappDB';
+import { addRecipe, getUser, recipeTable } from './recipeappDB';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const SearchPage = () => {
+  //recipe info
   const [name, setName] = useState('');
   const [selectedValue, setSelectedValue] = useState<string | null>(null);
   const [recipes, setRecipes] = useState<any[]>([]);
-  //user info for storing recipe?
+  //user info for storing recipe
     const [username, setUsername] = useState<string | null>(null);
     const [userDetails, setUserDetails] = useState<any>(null);
     const [userId, setUserId] =useState<any>(null);
@@ -30,16 +31,23 @@ const SearchPage = () => {
     getUserSession();
   }, []);
 
+  //this gets the user id for tables
   useEffect(() => {
     if (userDetails && userDetails[0]?.id) {
       setUserId(userDetails[0]?.id);
     }
-  }, [userDetails]);  // This hook runs whenever userDetails changes
+  }, [userDetails]);  
+
+  //make the recipe table
+    useEffect(() => {
+      recipeTable();
+  }, []);
 
   const clearRecipes = () => {
       setRecipes([]);
       };
 
+  //meal api stuff
   const fetchMealsByCategory = async (category: string) => {
       clearRecipes();
     try {
@@ -70,6 +78,8 @@ const SearchPage = () => {
     } else {
       Alert.alert("Please select a category!");
     }
+ 
+    
   };
   const handleSearchName = async () => {
       if (name) {
@@ -82,7 +92,7 @@ const SearchPage = () => {
       // console.log('Recipe Pressed:',recipe.idMeal);
       //get this userId and store this recipe id
      
-      // await addRecipe(userId,recipe.idMeal);
+      await addRecipe(userId,recipe.idMeal);
 
       // console.log(`Saved Recipe ID: ${recipe.idMeal} for User ${userId}`);
       console.log(`Recipe Id: ${recipe.idMeal}, User ID: ${userId}`);

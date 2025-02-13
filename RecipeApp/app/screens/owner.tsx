@@ -1,20 +1,87 @@
-import { Text, View, StyleSheet } from 'react-native';
+import { Text, View, StyleSheet, Alert } from 'react-native';
 import CardComponent from '@/components/card_component';
+import React, { useEffect, useState } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { getRecipes, getUser, recipeTable } from './recipeappDB';
+import { Button } from 'react-native-elements';
+import { ScrollView } from 'react-native-gesture-handler';
+import RecipeComponent from '@/components/recipe_component';
+import api from './apiServices';
 
 //screen will display content made by CURRENT user
 export default function OwnerScreen() {
- 
+  const [username, setUsername] = useState<string | null>(null);
+  const [userDetails, setUserDetails] = useState<any>(null);
+  const [userId, setUserId] = useState<any>(null);
+  const [userRecipes, setUserRecipes] = useState<any[]>([]);//this access the recipes table
+  const [apiRecipe, setApiRecipe] = useState<any[]>([]); //uses recipe table to summon api
+  //   useEffect(() => {
+  //     recipeTable();
+  // }, []);
 
-  const items: string[]=["first","second","Third"];
+  useEffect(() => {
+    const getUserSession = async () => {
+      const storedUsername = await AsyncStorage.getItem('username');
+      setUsername(storedUsername);
+      if (storedUsername) {
+        const user = await getUser(storedUsername);
+        setUserDetails(user);
+      }
+    };
+
+    getUserSession();
+  }, []);
+
+  useEffect(() => {
+    if (userDetails && userDetails[0]?.id) {
+      setUserId(userDetails[0]?.id);
+    }
+  }, [userDetails]);
+
+  //getting recipes
+  useEffect(() => {
+    const fetchUserRecipes = async () => {
+      if (userId) {
+        const recipes = await getRecipes(userId);
+        setUserRecipes(recipes);
+      }
+    };
+    console.log("User ID:", userId);
+    console.log("Recipes:", userRecipes);
+    fetchUserRecipes();
+  }, [userId]);
+
+  const handlePrint = async () => {
+    //pretty print
+    console.log(`User ID: ${userId}`);
+    console.log("Recipes:\n", JSON.stringify(userRecipes, null, 2));
+  }
+
+  const fetchMealById = async( id:string) =>{
+    try{
+      const response = await api.getMealById(id);
+      setApiRecipe(response.meals);
+    }catch(err){
+      Alert.alert(`Error`, err.message);
+    }
+  };
+
+
+
 
   return (
-    
-    <View style={styles.container1} >
-    
-      {items.map((item: string, index: number) => ( 
-        <CardComponent key={index} index={index} />
-      ))}
-    </View>
+    <ScrollView>
+      
+        {userRecipes.map((recipe, index) => (
+          <View key={index}>
+            <RecipeComponent key={index} recipe={recipe} index={index} />
+            <Text>Recipe ID: {recipe.recipe_id}</Text>
+            <Text>User ID: {recipe.user_id}</Text>
+          </View>
+        ))}
+     
+
+    </ScrollView>
 
   );
 }
