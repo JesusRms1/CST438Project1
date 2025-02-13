@@ -23,12 +23,18 @@ const SearchPage = () => {
       if (storedUsername) {
         const user = await getUser(storedUsername);
         setUserDetails(user);
-        setUserId(userDetails[0]?.id);
+      
       }
     };
 
     getUserSession();
   }, []);
+
+  useEffect(() => {
+    if (userDetails && userDetails[0]?.id) {
+      setUserId(userDetails[0]?.id);
+    }
+  }, [userDetails]);  // This hook runs whenever userDetails changes
 
   const clearRecipes = () => {
       setRecipes([]);
