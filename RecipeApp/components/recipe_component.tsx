@@ -36,6 +36,8 @@ const styles = StyleSheet.create({
     padding: 15,
     margin: 10,
     borderRadius: 8,
+    borderWidth: 2,
+    borderColor: 'black',
   },
   cardHeader: {
     fontSize: 18,

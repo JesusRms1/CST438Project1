@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Text, View, TextInput, Button, StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { updateUserInfo, getUser } from './recipeappDB';
+import { updateUserInfo, getUser, deleteAllRecipes, deleteAccount } from './recipeappDB';
 
 export default function AboutScreen({ navigation }) {
   const [username, setUsername] = useState<string | null>(null);
@@ -44,7 +44,50 @@ export default function AboutScreen({ navigation }) {
       alert('Failed to update user details.');
     }
   };
+  const deleteRe = async () => {
+      if (!username) {
+        alert('No user found. Please log in again.');
+        return;
+      }
 
+      const user1 = await getUser(username);
+
+      const success = await deleteAllRecipes(user1[0]?.id);
+
+      if (success) {
+        alert('Recipes deleted successfully!');
+      } else {
+        alert('Failed to delete recipes.');
+      }
+    };
+  const signOut = async () => {
+        if (!username) {
+          alert('No user found. Please log in again.');
+          return;
+        }
+
+          await AsyncStorage.removeItem('username');
+          alert('GoodBye!');
+          navigation.navigate("Login");
+      };
+  const deleteAc = async () => {
+        if (!username) {
+          alert('No user found. Please log in again.');
+          return;
+        }
+
+        const user1 = await getUser(username);
+
+        const success = await deleteAccount(user1[0]?.id);
+
+        if (success) {
+          await AsyncStorage.removeItem('username');
+          alert('User deleted successfully!');
+          navigation.navigate("Login");
+        } else {
+          alert('Failed to delete user.');
+        }
+      };
   return (
     <View style={styles.container}>
       <Text style={styles.heading}>Update User Details</Text>
@@ -61,7 +104,12 @@ export default function AboutScreen({ navigation }) {
         secureTextEntry
         onChangeText={setNewPassword}
       />
-      <Button title="Update Details" onPress={handleUpdate} />
+      <View style={{ flexDirection: 'column', gap: 10 }}>
+        <Button title="Update Details" onPress={handleUpdate} />
+        <Button title="Delete Recipes" onPress={deleteRe} />
+        <Button title="Delete Account" onPress={deleteAc} />
+        <Button title="Sign out" onPress={signOut} />
+      </View>
     </View>
   );
 }
@@ -88,4 +136,5 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     backgroundColor: '#fff',
   },
+
 });

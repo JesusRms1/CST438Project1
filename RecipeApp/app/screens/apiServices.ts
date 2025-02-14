@@ -27,6 +27,7 @@ const fetchAPI = async <T>(endpoint: string, options: FetchOptions = {}): Promis
 };
 
 export const api = {
+  getMealsByArea: (area: string) => fetchAPI<{ meals: any[] }>(`filter.php?a=${area}`),
   getMealsByCategory: (category: string) => fetchAPI<{ meals: any[] }>(`filter.php?c=${category}`),
   getMealById: (id: string) => fetchAPI<{ meals: any[] }>(`lookup.php?i=${id}`),
   getRandomMeal: () => fetchAPI<{ meals: any[] }>('random.php'),
