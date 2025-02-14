@@ -153,3 +153,13 @@ export const getRecipes = async(userId:number)=>{
         return[];
     }
 };
+
+export const wipeUserRecipes = async(userId:number) =>{
+    const database = await setupDatabase();
+    try{
+        return database.getAllAsync('DELETE FROM recipes WHERE user_id =?',userId) || [];
+    }catch(error){
+        console.error("Error trying to wipe user's recipes:", error);
+        return false;
+    }
+};

@@ -1,24 +1,38 @@
-import { Text, View, StyleSheet, Alert } from 'react-native';
+import { Text, View, StyleSheet, Alert, Touchable, TouchableOpacity } from 'react-native';
 import CardComponent from '@/components/card_component';
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { getRecipes, getUser, recipeTable } from './recipeappDB';
+import { getRecipes, getUser, recipeTable, wipeUserRecipes } from './recipeappDB';
 import { Button } from 'react-native-elements';
-import { ScrollView } from 'react-native-gesture-handler';
+import { RefreshControl, ScrollView } from 'react-native-gesture-handler';
 import RecipeComponent from '@/components/recipe_component';
 import api from './apiServices';
+import { useFocusEffect } from '@react-navigation/native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+
+
 
 //screen will display content made by CURRENT user
-export default function OwnerScreen() {
+export default function OwnerScreen({ navigation }: any) {
   const [username, setUsername] = useState<string | null>(null);
   const [userDetails, setUserDetails] = useState<any>(null);
   const [userId, setUserId] = useState<any>(null);
   const [userRecipes, setUserRecipes] = useState<any[]>([]);//this access the recipes table
   const [apiRecipe, setApiRecipe] = useState<any[]>([]); //uses recipe table to summon api
-  //   useEffect(() => {
-  //     recipeTable();
-  // }, []);
-  useEffect(() => {
+  const [refreshing, setRefreshing] = React.useState(false);  //manual reset
+
+  //reset does nothing...
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    // setApiRecipe([]);
+    setTimeout(() => {
+      setRefreshing(false);
+    }, 2000);
+  }, []);
+  
+
+  //get user data
+  useEffect(() => { 
     const getUserSession = async () => {
       const storedUsername = await AsyncStorage.getItem('username');
       setUsername(storedUsername);
@@ -30,25 +44,46 @@ export default function OwnerScreen() {
 
     getUserSession();
   }, []);
-
+  //get the id from user
   useEffect(() => {
     if (userDetails && userDetails[0]?.id) {
       setUserId(userDetails[0]?.id);
     }
   }, [userDetails]);
 
-  //getting recipes
-  useEffect(() => {
-    const fetchUserRecipes = async () => {
-      if (userId) {
-        const recipes = await getRecipes(userId);
-        setUserRecipes(recipes);
+  //======================getting recipes from user using recipes table
+  // useEffect(() => {
+  //   const fetchUserRecipes = async () => {
+  //     if (userId) {
+  //       const recipes = await getRecipes(userId);
+  //       setUserRecipes(recipes);
+  //     }
+  //   };
+  //   console.log("User ID:", userId);
+  //   console.log("Recipes:", userRecipes);
+  //   fetchUserRecipes();
+  // }, [userId]);
+
+  //====================focus effect fetchUserRecipes variant
+  useFocusEffect(
+    useCallback(() => {
+      const fetchUserRecipes = async () => {
+        if (userId) {
+          const recipes = await getRecipes(userId);
+          const uniqueRecipes = Array.from(
+          new Map(recipes.map(recipe => [recipe.recipe_id, recipe])).values()
+        );
+
+        setUserRecipes(uniqueRecipes); 
       }
-    };
-    console.log("User ID:", userId);
-    console.log("Recipes:", userRecipes);
-    fetchUserRecipes();
-  }, [userId]);
+      };
+  
+      console.log("User ID:", userId);
+      console.log("Recipes:", userRecipes);
+  
+      fetchUserRecipes();
+    }, [userId]) //  
+  );
 
   const handlePrint = async () => {
     //pretty print
@@ -67,6 +102,27 @@ export default function OwnerScreen() {
     }
   };
 
+  //====================focuseffect fetch recipes variant
+  // useFocusEffect(
+  //   useCallback(()=>{
+  //     const fetchRecipes =async() =>{
+  //       if(userRecipes.length>0){
+  //         setApiRecipe([]);
+  //         const mealIds = userRecipes.map((recipe) => recipe.recipe_id.toString());
+  //         for(const id of mealIds){
+  //           await fetchMealById(id);
+  //         }
+  //       }
+  //     };
+  //     fetchRecipes();
+  //   },[userRecipes])
+  // );
+
+
+
+
+
+  //==================og code that doesn't update after leaving search
   useEffect(() => {
     const fetchRecipes = async () => {
       if (userRecipes.length > 0) {
@@ -79,19 +135,43 @@ export default function OwnerScreen() {
     fetchRecipes();
   }, [userRecipes]);
 
+  //=================wipe user recipes for debug
+
+  const handleWipe =async ()=>{
+    await wipeUserRecipes(userId);
+    console.log("User data wiped?")
+  }
+  
+  const handleRecipePage = async(recipeId:string)=>{
+    //get recipe id, and use api in other screen to get its data
+    //go to recipePage ("stolen")
+    // const navigation = useNavigation<NavigationProp>();
+    console.log(`RecipeID inside press: ${recipeId}`)
+    navigation.navigate("RecipeInfo",{recipeId});
+  };
 
 
 
+
+//TODO: make these click able and move to "stolen page..."
   return (
-    <ScrollView>
+    <SafeAreaProvider>
+      <Button title={"WIPE DATA"} onPress={handleWipe}/>
+          <ScrollView
+          refreshControl={     <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>}>
+             <Text>Pull down to update?</Text> 
         {apiRecipe.map((recipe, index) => (
           <View key={index}>
-            <RecipeComponent key={index} recipe={recipe} index={index} />
+            <TouchableOpacity key={index} onPress={()=>handleRecipePage(recipe.recipe_id)}>
+             <RecipeComponent key={index} recipe={recipe} index={index} />
+            </TouchableOpacity>
           </View>
         ))}
      
 
     </ScrollView>
+    </SafeAreaProvider>
+
 
   );
 }

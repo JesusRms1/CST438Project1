@@ -68,6 +68,16 @@ export default function HomeScreen() {
   );
 }
 
+// const RecipeInfoScreen =() =>{
+//   return(
+//     <HomeTab.Navigator >
+//       <HomeTab.Screen name="Stolen" component={Saved} >
+        
+//       </HomeTab.Screen>
+//     </HomeTab.Navigator>
+//   )
+// };
+
 // Styles
 const styles = StyleSheet.create({
   container: {

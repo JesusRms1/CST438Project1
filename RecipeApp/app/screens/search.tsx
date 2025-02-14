@@ -97,7 +97,12 @@ const SearchPage = () => {
       // console.log(`Saved Recipe ID: ${recipe.idMeal} for User ${userId}`);
       console.log(`Recipe Id: ${recipe.idMeal}, User ID: ${userId}`);
 
+      
+
     }
+
+
+    
 
   const CollapseFilter = () => {
     const [isOpen, setIsOpen] = useState(false);
