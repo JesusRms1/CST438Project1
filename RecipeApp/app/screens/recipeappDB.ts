@@ -153,3 +153,34 @@ export const getRecipes = async(userId:number)=>{
         return[];
     }
 };
+export const deleteAllRecipes = async (userId: number): Promise<boolean> => {
+  try {
+    const database = await setupDatabase();
+    console.log('Deleting recipes for user ID:', userId);
+
+    await database.getAllAsync(`DELETE FROM recipes WHERE user_id = ?;`, [userId]);
+
+    console.log('Recipes deleted successfully.');
+    return true;
+  } catch (error) {
+    console.error("Error deleting user's recipes:", error);
+    return false;
+  }
+};
+
+export const deleteAccount = async (userId: number): Promise<boolean> => {
+  try {
+    const database = await setupDatabase();
+    console.log('Deleting everything for user ID:', userId);
+
+    await database.getAllAsync(`DELETE FROM recipes WHERE user_id = ?;`, [userId]);
+    await database.getAllAsync(`DELETE FROM users WHERE id = ?;`, [userId]);
+
+
+    console.log('User deleted successfully.');
+    return true;
+  } catch (error) {
+    console.error("Error deleting user:", error);
+    return false;
+  }
+};
