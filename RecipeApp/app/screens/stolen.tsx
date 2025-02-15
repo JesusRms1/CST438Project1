@@ -4,21 +4,22 @@ import React,{ useEffect, useState } from 'react';
 import { useNavigation } from 'expo-router';
 import api from './apiServices';
 import { ScrollView } from 'react-native-gesture-handler';
+import { removeRecipe } from './recipeappDB';
+import { Button } from 'react-native-elements';
 
 
 type RootStackParamList = {
-  stolen: { recipeId: string }; 
+  stolen: { recipeId: string, usId: number}; 
 };
 
 
 type StolenScreenRouteProp = RouteProp<RootStackParamList, "stolen">;
 
-export default function StolenScreen() {
+export default function StolenScreen({ navigation }: any) {
   const [recipeObject, setRecipeObject] = useState<any>(null);
-  const navigation= useNavigation()
   const route = useRoute<StolenScreenRouteProp>(); 
-  const { recipeId } = route.params; 
-
+  const { recipeId, usId } = route.params; 
+  console.log(`User id: `,usId);
   
     
   const fetchMealById = async (id: string) => {
@@ -51,9 +52,16 @@ export default function StolenScreen() {
 
   },[]);
 
+  const handleDelete =async ()=>{
+    removeRecipe(usId, recipeObject.idMeal);
+    navigation.replace("Home");
+
+  }
+
   return (
-    <ScrollView>
+   
           <View>
+            <ScrollView>
     <Text>Recipe ID: {recipeId}</Text>
 
     {recipeObject ? (
@@ -62,13 +70,17 @@ export default function StolenScreen() {
         <Text>Recipe Name: {recipeObject.strMeal}</Text>
         <Text>Category: {recipeObject.strCategory}</Text>
         <Text>Instructions: {recipeObject.strInstructions}</Text>
+       
         
       </View>
     ) : (
       <Text>Loading...</Text> 
     )}
-  </View>
+    <Button title={"Delete this recipe"} onPress={handleDelete}/>
     </ScrollView>
+    
+  </View>
+    
 
   );
 }

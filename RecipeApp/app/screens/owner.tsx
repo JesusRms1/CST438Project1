@@ -143,7 +143,9 @@ export default function OwnerScreen({ navigation }: any) {
   
   const handleRecipePage = async(recipeId:string)=>{
     console.log(`RecipeID inside press: ${recipeId}`)
-    navigation.navigate("RecipeInfo",{recipeId});
+    navigation.navigate("RecipeInfo",{
+      recipeId,
+    usId:userId});
   };
 
 

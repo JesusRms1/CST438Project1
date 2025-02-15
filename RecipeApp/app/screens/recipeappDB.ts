@@ -154,12 +154,26 @@ export const getRecipes = async(userId:number)=>{
     }
 };
 
+//remove ALL recipes from A user
 export const wipeUserRecipes = async(userId:number) =>{
     const database = await setupDatabase();
     try{
         return database.getAllAsync('DELETE FROM recipes WHERE user_id =?',userId) || [];
     }catch(error){
         console.error("Error trying to wipe user's recipes:", error);
+        return false;
+    }
+};
+
+//removes A recipe from A user
+export const removeRecipe = async(userId:number,recipeId:number)=>{
+    const database = await setupDatabase();
+    try{
+        return database.getAllAsync('DELETE FROM recipes WHERE recipe_id = ? AND user_id = ?',
+            [recipeId,userId]
+        );
+    }catch(error){
+        console.error("Error trying to remove recipe from user: ",error);
         return false;
     }
 };
