@@ -163,10 +163,11 @@ export default function OwnerScreen({ navigation }: any) {
 
   return (
     <SafeAreaProvider>
-      <Button title={"WIPE DATA"} onPress={handleWipe}/>
+      {/* <Button  title={"WIPE DATA"} onPress={handleWipe}/> */}
           <ScrollView
-          refreshControl={ <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>}>
-             <Text>Pull down to update?</Text> 
+          // refreshControl={ <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>}
+          >
+             {/* <Text>Pull down to update?</Text>  */}
         {apiRecipe.map((recipe, index) => (
           <View key={index}>
             <TouchableOpacity key={index} onPress={()=>handleRecipePage(recipe.idMeal)}>
@@ -198,5 +199,8 @@ const styles = StyleSheet.create({
   },
   text: {
     color: '#fff',
+  },
+  btn:{
+    color:"red",
   },
 });
