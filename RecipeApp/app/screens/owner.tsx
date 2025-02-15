@@ -12,7 +12,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 
 
-//screen will display content made by CURRENT user
+//screen will display recipes owned by CURRENT user
 export default function OwnerScreen({ navigation }: any) {
   const [username, setUsername] = useState<string | null>(null);
   const [userDetails, setUserDetails] = useState<any>(null);
@@ -151,12 +151,11 @@ export default function OwnerScreen({ navigation }: any) {
 
 
 
-//TODO: make these click able and move to "stolen page..."
   return (
     <SafeAreaProvider>
       <Button title={"WIPE DATA"} onPress={handleWipe}/>
           <ScrollView
-          refreshControl={     <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>}>
+          refreshControl={ <RefreshControl refreshing={refreshing} onRefresh={onRefresh}/>}>
              <Text>Pull down to update?</Text> 
         {apiRecipe.map((recipe, index) => (
           <View key={index}>

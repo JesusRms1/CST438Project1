@@ -7,7 +7,7 @@ import { ScrollView } from 'react-native-gesture-handler';
 import { removeRecipe } from './recipeappDB';
 import { Button } from 'react-native-elements';
 
-
+//prevents data from being 'undefined'
 type RootStackParamList = {
   stolen: { recipeId: string, usId: number}; 
 };
