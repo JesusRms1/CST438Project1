@@ -52,38 +52,48 @@ export default function OwnerScreen({ navigation }: any) {
   }, [userDetails]);
 
   //======================getting recipes from user using recipes table
-  useEffect(() => {
-    const fetchUserRecipes = async () => {
-      if (userId) {
-        const recipes = await getRecipes(userId);
-        setUserRecipes(recipes);
-      }
-    };
-    console.log("User ID:", userId);
-    console.log("Recipes:", userRecipes);
-    fetchUserRecipes();
-  }, [userId]);
+  // useEffect(() => {
+  //   const fetchUserRecipes = async () => {
+  //     if (userId) {
+  //       const recipes = await getRecipes(userId);
+  //       setUserRecipes(recipes);
+  //     }
+  //   };
+  //   console.log("User ID:", userId);
+  //   console.log("Recipes:", userRecipes);
+  //   fetchUserRecipes();
+  // }, [userId]);
 
   //====================focus effect fetchUserRecipes variant
-  // useFocusEffect(
-  //   useCallback(() => {
-  //     const fetchUserRecipes = async () => {
-  //       if (userId) {
-  //         const recipes = await getRecipes(userId);
-  //         const uniqueRecipes = Array.from(
-  //         new Map(recipes.map(recipe => [recipe.recipe_id, recipe])).values()
-  //       );
+  useFocusEffect(
+    useCallback(() => {
+      const fetchUserRecipes = async () => {
+        if (userId) {
+          //these 2 gotta clear or we see duplicates
+          setUserRecipes([]); 
+          setApiRecipe([]); 
 
-  //       setUserRecipes(uniqueRecipes); 
-  //     }
-  //     };
+          const recipes = await getRecipes(userId);
+          const uniqueRecipes = Array.from(
+          new Map(recipes.map(recipe => [recipe.recipe_id, recipe])).values()
+        );
+
+        setUserRecipes(uniqueRecipes); 
+      }
+      };
   
-  //     console.log("User ID:", userId);
-  //     console.log("Recipes:", userRecipes);
+      console.log("User ID:", userId);
+      console.log("Recipes:", userRecipes);
   
-  //     fetchUserRecipes();
-  //   }, [userId]) //  
-  // );
+      fetchUserRecipes();
+      //clear again
+      return () => {
+        setUserRecipes([]); 
+        setApiRecipe([]); 
+      };
+  
+    }, [userId]) //  
+  );
 
   const handlePrint = async () => {
     //pretty print
