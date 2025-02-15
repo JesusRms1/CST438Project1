@@ -1,29 +1,75 @@
 import { useRoute, RouteProp } from '@react-navigation/native';
-import { Text, View, StyleSheet } from 'react-native';
-import React,{ useEffect } from 'react';
+import { Text, View, StyleSheet, Alert,Image } from 'react-native';
+import React,{ useEffect, useState } from 'react';
+import { useNavigation } from 'expo-router';
+import api from './apiServices';
+import { ScrollView } from 'react-native-gesture-handler';
 
-// Define navigation parameters
+
 type RootStackParamList = {
-  stolen: { recipeId: string }; // Ensure this matches your navigation key
+  stolen: { recipeId: string }; 
 };
 
-// ✅ Correctly type the route
+
 type StolenScreenRouteProp = RouteProp<RootStackParamList, "stolen">;
 
 export default function StolenScreen() {
-  const route = useRoute<StolenScreenRouteProp>(); // ✅ Fix: Add type
-  const { recipeId } = route.params; // ✅ Now TypeScript recognizes `recipeId`
+  const [recipeObject, setRecipeObject] = useState<any>(null);
+  const navigation= useNavigation()
+  const route = useRoute<StolenScreenRouteProp>(); 
+  const { recipeId } = route.params; 
 
-  useEffect(() => {
-    console.log("Recipe ID received:", recipeId);
-    // Call your API or database function here with recipeId
-  }, [recipeId]);
+  
+    
+  const fetchMealById = async (id: string) => {
+    try {
+      console.log("Fetching meal with ID:", id);
+      const response = await api.getMealById(id);
+      // console.log("API response:", response);
+
+      if (response?.meals) {
+        // console.log("Meal found:", JSON.stringify( response.meals[0], null, 2));
+        setRecipeObject(response.meals[0]); 
+       
+      } else {
+        console.warn("No meals found for this ID:", id);
+      }
+    } catch (err) {
+      console.error("API error:", err);
+      Alert.alert("Error", err.message);
+    }
+  };
+
+
+  useEffect(()=>{
+    console.log("Recipe ID received:", recipeId); // Check if recipeId is received
+  if (recipeId) {
+    fetchMealById(recipeId);
+  } else {
+    console.warn("Recipe ID is missing");
+  }
+
+  },[]);
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.text}>Recipe ID: {recipeId}</Text>
-      <Text style={styles.text}>Stolen screen</Text>
-    </View>
+    <ScrollView>
+          <View>
+    <Text>Recipe ID: {recipeId}</Text>
+
+    {recipeObject ? (
+      <View>
+        <Image source={{uri: recipeObject.strMealThumb}}  style={{ width: 200, height: 200 }} />
+        <Text>Recipe Name: {recipeObject.strMeal}</Text>
+        <Text>Category: {recipeObject.strCategory}</Text>
+        <Text>Instructions: {recipeObject.strInstructions}</Text>
+        
+      </View>
+    ) : (
+      <Text>Loading...</Text> 
+    )}
+  </View>
+    </ScrollView>
+
   );
 }
 

@@ -88,18 +88,14 @@ const SearchPage = () => {
         Alert.alert("Please input a dish!");
       }
     };
-    const handleRecipePress = async (recipe ) =>{
+    const handleRecipePress = async (recipe) =>{
       // console.log('Recipe Pressed:',recipe.idMeal);
       //get this userId and store this recipe id
      
       await addRecipe(userId,recipe.idMeal);
-
-      // console.log(`Saved Recipe ID: ${recipe.idMeal} for User ${userId}`);
       console.log(`Recipe Id: ${recipe.idMeal}, User ID: ${userId}`);
 
-      
-
-    }
+    };
 
 
     

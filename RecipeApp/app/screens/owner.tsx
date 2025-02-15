@@ -136,16 +136,12 @@ export default function OwnerScreen({ navigation }: any) {
   }, [userRecipes]);
 
   //=================wipe user recipes for debug
-
   const handleWipe =async ()=>{
     await wipeUserRecipes(userId);
     console.log("User data wiped?")
   }
   
   const handleRecipePage = async(recipeId:string)=>{
-    //get recipe id, and use api in other screen to get its data
-    //go to recipePage ("stolen")
-    // const navigation = useNavigation<NavigationProp>();
     console.log(`RecipeID inside press: ${recipeId}`)
     navigation.navigate("RecipeInfo",{recipeId});
   };
