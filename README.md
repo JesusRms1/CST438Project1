@@ -35,8 +35,8 @@ This is a recipe application that makes use of an API we found [here](https://gi
 
 ### Daniel Rodas
 
-- [a link to your pull requests]()
-- [a link to your issues]()
+- Daniel's pull requests [a link to pr](https://github.com/JesusRms1/CST438Project1/pulls?q=is%3Apr+is%3Aclosed+author%3ATunedTuna)
+- Daniel's issues [a link to your issues](https://github.com/JesusRms1/CST438Project1/issues?q=is%3Aissue%20state%3Aclosed%20assignee%3ATunedTuna)
 
 #### What was your role / which stories did you work on
 
@@ -49,8 +49,8 @@ This is a recipe application that makes use of an API we found [here](https://gi
 
 ### Jesus Ramos
 
-- [a link to your pull requests]()
-- [a link to your issues]()
+- Jesus's pull requests [a link to pr](https://github.com/JesusRms1/CST438Project1/pulls?q=is%3Apr+is%3Aclosed+author%3AJesusRms1)
+- Jesus's issues [a link to your issues](https://github.com/JesusRms1/CST438Project1/issues?q=is%3Aissue%20state%3Aclosed%20assignee%3AJesusRms1)
 
 #### What was your role / which stories did you work on
 
