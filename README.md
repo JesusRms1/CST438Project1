@@ -8,14 +8,14 @@ This is a recipe application that makes use of an API we found [here](https://gi
 
 * Communication managed through Slack.
 * There was initially 5 issues considered at the very begining. There was more issues made and completed as we continued the project.
-* There were 18 issues completed throughout the project. (Although many issues were never stated but completed)
+* There were 16 issues completed throughout the project. (Although many issues were never stated but completed)
 
 ## Team Retrospective
 
 ### Gustavo Javier
 
-- [a link to your pull requests]()
-- [a link to your issues]()
+- Gus's pull request list [a link to pr](https://github.com/JesusRms1/CST438Project1/pulls?q=is%3Apr+is%3Aclosed+author%3Agusjavi)
+- Gus's issues list [a link to issues](https://github.com/JesusRms1/CST438Project1/issues?q=is%3Aissue%20state%3Aclosed%20assignee%3Agusjavi)
 
 #### What was your role / which stories did you work on
 
