@@ -18,6 +18,7 @@ This is a recipe application that makes use of an API we found [here](https://gi
 - Gus's issues list [a link to issues](https://github.com/JesusRms1/CST438Project1/issues?q=is%3Aissue%20state%3Aclosed%20assignee%3Agusjavi)
 
 #### What was your role / which stories did you work on
+  My role varied throughout the project. I worked on signup, login, profile, settings, search, api usage, styles, and small assistance here and there.
 
 + What was the biggest challenge?
   + My biggest challenge throughout this would be connecting/using both styles of navigations in react-native. The solution is messy (nested nav), but works for the purpose of the application. This also includes the removal of a back up button and titles.
@@ -63,6 +64,7 @@ This is a recipe application that makes use of an API we found [here](https://gi
 ## Conclusion
 
 - How successful was the project?
-  - Think in terms of what did you set out to do and what actually got done?
+  - I would say it was pretty succesful in the last week of the project. We set out a few issues in the beginning that we didn't have time for at the end. But majority was completed.
 - What was the largest victory?
+  - I would say the creation of the db was the largest victory.  
 - Final assessment of the project
