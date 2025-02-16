@@ -18,7 +18,7 @@ This is a recipe application that makes use of an API we found [here](https://gi
 - Gus's issues list [a link to issues](https://github.com/JesusRms1/CST438Project1/issues?q=is%3Aissue%20state%3Aclosed%20assignee%3Agusjavi)
 
 #### What was your role / which stories did you work on
-  My role varied throughout the project. I worked on signup, login, profile, settings, search, api usage, styles, and small assistance here and there.
+  My role varied throughout the project. I worked on signup-page: the template of it with input and buttons but no functionality; login-page: the template of it with input and buttons but no functionality; profile-about-page: the template and the functionality, the connection to user table db; settings-page: the template and the functionality, the connection to user table and recipe table from db ; search-page: the template and the functionality, the connection to the api; api-usage: with Daniel connecting search-page with api and connection by myself the api used for profile-about-page; styles: made the overall app in unison; and small assistance here and there.
 
 + What was the biggest challenge?
   + My biggest challenge throughout this would be connecting/using both styles of navigations in react-native. The solution is messy (nested nav), but works for the purpose of the application. This also includes the removal of a back up button and titles.
