@@ -19,12 +19,18 @@ This is a recipe application that makes use of an API we found [here](https://gi
 
 #### What was your role / which stories did you work on
 
-+ What was the biggest challenge? 
++ What was the biggest challenge?
+  + My biggest challenge throughout this would be connecting/using both styles of navigations in react-native. The solution is messy (nested nav), but works for the purpose of the application. This also includes the removal of a back up button and titles.
 + Why was it a challenge?
+  + This was challenging since the format/language for react-native was new to me. I didn't know how to make it work nor did the videos/documents assist directly to our issue.
   + How was the challenge addressed?
+    + This challenge was addressed by trail and error. One overflow thread, youtube video, and some chat assistance.
 + Favorite / most interesting part of this project
+  + Favorite part would be the search page and navigation system. 
 + If you could do it over, what would you change?
+  + Perhaps preparing the idea/stories/issues of the app better and more detailed. 
 + What is the most valuable thing you learned?
+  + I would say communication and trust.  
 
 ### Daniel Rodas
 
