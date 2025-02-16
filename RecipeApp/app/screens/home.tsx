@@ -68,17 +68,7 @@ export default function HomeScreen() {
   );
 }
 
-// const RecipeInfoScreen =() =>{
-//   return(
-//     <HomeTab.Navigator >
-//       <HomeTab.Screen name="Stolen" component={Saved} >
-        
-//       </HomeTab.Screen>
-//     </HomeTab.Navigator>
-//   )
-// };
 
-// Styles
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -95,7 +85,6 @@ const styles = StyleSheet.create({
   },
 });
 
-// screenOptions should be defined separately
 const screenOptions = {
   tabBarActiveTintColor: '#ffd33d',
   headerStyle: {

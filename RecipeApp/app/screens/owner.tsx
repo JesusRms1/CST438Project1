@@ -51,20 +51,6 @@ export default function OwnerScreen({ navigation }: any) {
     }
   }, [userDetails]);
 
-  //======================getting recipes from user using recipes table
-  // useEffect(() => {
-  //   const fetchUserRecipes = async () => {
-  //     if (userId) {
-  //       const recipes = await getRecipes(userId);
-  //       setUserRecipes(recipes);
-  //     }
-  //   };
-  //   console.log("User ID:", userId);
-  //   console.log("Recipes:", userRecipes);
-  //   fetchUserRecipes();
-  // }, [userId]);
-
-  //====================focus effect fetchUserRecipes variant
   useFocusEffect(
     useCallback(() => {
       const fetchUserRecipes = async () => {
@@ -112,27 +98,6 @@ export default function OwnerScreen({ navigation }: any) {
     }
   };
 
-  //====================focuseffect fetch recipes variant
-  // useFocusEffect(
-  //   useCallback(()=>{
-  //     const fetchRecipes =async() =>{
-  //       if(userRecipes.length>0){
-  //         setApiRecipe([]);
-  //         const mealIds = userRecipes.map((recipe) => recipe.recipe_id.toString());
-  //         for(const id of mealIds){
-  //           await fetchMealById(id);
-  //         }
-  //       }
-  //     };
-  //     fetchRecipes();
-  //   },[userRecipes])
-  // );
-
-
-
-
-
-  //==================og code that doesn't update after leaving search
   useEffect(() => {
     const fetchRecipes = async () => {
       if (userRecipes.length > 0) {
