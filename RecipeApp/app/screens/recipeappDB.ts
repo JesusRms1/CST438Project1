@@ -23,6 +23,15 @@ export const createTables = async () => {
         );
     `);
     console.log("Users table created");
+
+    // delete after running this just changes previouse usernames to lowercase for case sensetivity once you run delete.
+    try{
+        await database.execAsync(`UPDATE users SET username = LOWER(username);`);
+        console.log("Username name on table are now converted to Lowercase")
+    }
+    catch (error) {
+        console.error("Error converting usernames to lowercase:", error);
+    }
 };
 
   // Create Recipe Table
@@ -37,14 +46,16 @@ export const createTables = async () => {
         );
     `);
     console.log("Recipes table created");
+    
   }
 // Insert User (Sign-Up)
 export const insertUser = async (username: string, password: string) => {
     const database = await setupDatabase();
     try {
+        const lUsername = username.toLowerCase();
         await database.runAsync(
             'INSERT INTO users (username, password) VALUES (?, ?);',
-            username,
+            lUsername,
             password
         );
         return true;
@@ -58,9 +69,11 @@ export const insertUser = async (username: string, password: string) => {
 export const loginUser = async (username: string, password: string) => {
     const database = await setupDatabase();
     try {
+        // to handle case sensitive
+        const lUsername = username.toLowerCase();
         const user = await database.getFirstAsync(
             'SELECT * FROM users WHERE username = ? AND password = ?;',
-            username,
+            lUsername,
             password
         );
         return user ? true : false;
@@ -175,5 +188,47 @@ export const removeRecipe = async(userId:number,recipeId:number)=>{
     }catch(error){
         console.error("Error trying to remove recipe from user: ",error);
         return false;
+export const deleteAllRecipes = async (userId: number): Promise<boolean> => {
+  try {
+    const database = await setupDatabase();
+    console.log('Deleting recipes for user ID:', userId);
+
+    await database.getAllAsync(`DELETE FROM recipes WHERE user_id = ?;`, [userId]);
+
+    console.log('Recipes deleted successfully.');
+    return true;
+  } catch (error) {
+    console.error("Error deleting user's recipes:", error);
+    return false;
+  }
+};
+
+export const deleteAccount = async (userId: number): Promise<boolean> => {
+  try {
+    const database = await setupDatabase();
+    console.log('Deleting everything for user ID:', userId);
+
+    await database.getAllAsync(`DELETE FROM recipes WHERE user_id = ?;`, [userId]);
+    await database.getAllAsync(`DELETE FROM users WHERE id = ?;`, [userId]);
+
+
+    console.log('User deleted successfully.');
+    return true;
+  } catch (error) {
+    console.error("Error deleting user:", error);
+    return false;
+  }
+};
+export const getRecipeCount = async (userId: number) => {
+    const database = await setupDatabase();
+    try {
+        const result = await database.getFirstAsync(
+            'SELECT COUNT(*) as count FROM recipes WHERE user_id = ?;',
+            [userId]
+        );
+        return result?.count ?? 0;
+    } catch (error) {
+        console.error("Error fetching recipe count:", error);
+        return 0;
     }
 };

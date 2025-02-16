@@ -1,10 +1,11 @@
 import { Text, View, StyleSheet } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { getUser } from './recipeappDB';
+import { getUser, getRecipeCount } from './recipeappDB';
 
 export default function AboutScreen() {
   const [username, setUsername] = useState<string | null>(null);
+  const [count, setCount] = useState<number | null>(null);
   const [userDetails, setUserDetails] = useState<any>(null);
 
   useEffect(() => {
@@ -20,15 +21,29 @@ export default function AboutScreen() {
     getUserSession();
   }, []);
 
+  useEffect(() => {
+    const fetchRecipeCount = async () => {
+      if (userDetails && userDetails[0]?.id) {
+        const count1 = await getRecipeCount(userDetails[0]?.id);
+        setCount(count1);
+      }
+    };
+
+    fetchRecipeCount();
+  }, [userDetails]);
+
   return (
     <View style={styles.container}>
       <Text style={styles.text}>{username ? `Hello, ${username}!` : 'Loading...'}</Text>
       {userDetails ? (
-          <>
-        <Text style={styles.text}>{`User ID: ${userDetails[0]?.id}`}</Text>
-              <Text style={styles.text}>{`User Username: ${userDetails[0]?.username}`}</Text>
-              <Text style={styles.text}>{`User Password: ${userDetails[0]?.password}`}</Text>
-              </>
+        <>
+          <Text style={styles.text}>{`User ID: ${userDetails[0]?.id}`}</Text>
+          <Text style={styles.text}>{`User Username: ${userDetails[0]?.username}`}</Text>
+          <Text style={styles.text}>{`User Password: ${userDetails[0]?.password}`}</Text>
+          <Text style={styles.text}>
+            {count !== null ? `Amount of favorite Recipes: ${count}` : 'Loading...'}
+          </Text>
+        </>
       ) : (
         <Text style={styles.text}>Loading user details...</Text>
       )}
@@ -49,8 +64,9 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     fontWeight: 'bold',
   },
-  text:{
-    //sumthin
-  }
-
+  text: {
+    fontSize: 16,
+    marginBottom: 10,
+    textAlign: 'center',
+  },
 });

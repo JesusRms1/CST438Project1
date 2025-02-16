@@ -13,10 +13,10 @@ const AccountScreen = ({ navigation }: any) => {
       return;
     }
 
-    const isLogin = await loginUser(username, password);
+    const isLogin = await loginUser(username.toLowerCase(), password);
     if (isLogin) {
         try {
-          await AsyncStorage.setItem('username', username);
+          await AsyncStorage.setItem('username', username.toLowerCase());
           alert(`Welcome, ${username}!`);
           navigation.navigate("Home");
         } catch (error) {
@@ -65,47 +65,65 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
-    backgroundColor: '#f8f8f8',
+    backgroundColor: 'linear-gradient(135deg, #6e45e2, #88d3ce)',
   },
   title: {
-    fontSize: 35,
+    fontSize: 40,
     fontWeight: 'bold',
-    marginBottom: 40,
+    marginBottom: 50,
+    color: '#000000',
     textAlign: 'center',
+    textShadowColor: 'rgba(0, 0, 0, 0.5)',
+    textShadowOffset: { width: 2, height: 2 },
+    textShadowRadius: 4,
   },
   UserIn: {
-    fontSize: 16,
+    fontSize: 18,
     marginBottom: 5,
-    textAlign: 'center',
+    color: '#000000',
+    alignSelf: 'flex-start',
+    marginLeft: 50,
   },
   input: {
-    width: '30%',
+    width: '80%',
     height: 50,
     borderWidth: 1,
     borderColor: '#ccc',
-    borderRadius: 8,
-    marginBottom: 10,
+    borderRadius: 12,
+    marginBottom: 15,
     backgroundColor: '#fff',
-    textAlign: 'center',
+    paddingHorizontal: 15,
+    fontSize: 16,
+    shadowColor: '#000',
+    shadowOffset: { width: 1, height: 2 },
+    shadowOpacity: 0.3,
+    shadowRadius: 4,
+    elevation: 5,
   },
   button: {
     backgroundColor: '#007BFF',
-    paddingVertical: 10,
-    paddingHorizontal: 20,
-    borderRadius: 8,
-    marginTop: 10,
+    paddingVertical: 15,
+    paddingHorizontal: 30,
+    borderRadius: 12,
+    marginTop: 20,
     alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: { width: 1, height: 3 },
+    shadowOpacity: 0.4,
+    shadowRadius: 5,
+    elevation: 6,
   },
   buttonTxt: {
     color: '#fff',
-    fontSize: 18,
-    fontWeight: 'bold',
-    textAlign: 'center',
+    fontSize: 20,
+    fontWeight: '600',
+    textTransform: 'uppercase',
+    letterSpacing: 1,
   },
   signup: {
-    fontSize: 16,
-    color: '#007BFF',
-    marginTop: 10,
+    fontSize: 18,
+    color: '#000000',
+    marginTop: 20,
     textAlign: 'center',
     textDecorationLine: 'underline',
   },

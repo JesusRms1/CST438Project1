@@ -48,6 +48,15 @@ const SearchPage = () => {
       };
 
   //meal api stuff
+  const fetchMealsByArea = async (area: string) => {
+        clearRecipes();
+      try {
+        const response = await api.getMealsByArea(area);
+        setRecipes(response.meals);
+      } catch (err) {
+        Alert.alert('Error', err.message);
+      }
+    };
   const fetchMealsByCategory = async (category: string) => {
       clearRecipes();
     try {
@@ -78,16 +87,16 @@ const SearchPage = () => {
     } else {
       Alert.alert("Please select a category!");
     }
- 
-    
   };
-  const handleSearchName = async () => {
-      if (name) {
-        await fetchMealsByName(name);
+   const handleSearch2 = async () => {
+      if (selectedValue) {
+        await fetchMealsByArea(area);
       } else {
-        Alert.alert("Please input a dish!");
+        Alert.alert("Please select a area!");
       }
     };
+
+    const handleRecipePress = async (recipe ) =>{
     const handleRecipePress = async (recipe) =>{
       // console.log('Recipe Pressed:',recipe.idMeal);
       //get this userId and store this recipe id
@@ -120,11 +129,11 @@ const SearchPage = () => {
     return (
       <ScrollView>
         <TouchableOpacity onPress={() => setIsOpen(!isOpen)} style={styles.fakeButton}>
-          <Text style={styles.fakeText}>{isOpen ? 'Close Filter Panel' : 'Open Filter Panel'}</Text>
+          <Text style={styles.fakeText}>{isOpen ? 'Close Category Filter Panel' : 'Open Category Filter Panel'}</Text>
         </TouchableOpacity>
         {isOpen && (
           <View style={styles.filterPanel}>
-            <Button title="Clear Filters" onPress={clearFilters} />
+            <Button title="Clear Category" onPress={clearFilters} />
             {items.map((item, index) => (
               <CheckBox
                 key={index}
@@ -141,21 +150,58 @@ const SearchPage = () => {
         )}
       </ScrollView>
     );
-  };
 
+  };
+  const CollapseFilter2 = () => {
+      const [isOpen, setIsOpen] = useState(false);
+      const [selectedIndex, setIndex] = useState<number | null>(null);
+      const items: string[] = ["American", "British", "Canadian", "Chinese", "Dutch", "Egyptian", "French",
+          "Greek", "Indian", "Irish", "Italian", "Jamaican", "Japanese", "Kenyan", "Malaysian", "Mexican",
+          "Moroccan", "Polish", "Portuguese", "Russian", "Spanish", "Thai", "Tunisian", "Turkish", "Unknown", "Vietnamese"]
+;
+      const handleRadioSelect = (index: number, title: string) => {
+        setIndex(index);
+        setSelectedValue(title);
+        fetchMealsByArea(title);
+      };
+
+      const clearFilters = () => {
+        setSelectedValue(null);
+        setIndex(null);
+        setRecipes([]);
+      };
+
+      return (
+        <ScrollView>
+          <TouchableOpacity onPress={() => setIsOpen(!isOpen)} style={styles.fakeButton}>
+            <Text style={styles.fakeText}>{isOpen ? 'Close Area Filter Panel' : 'Open Area Filter Panel'}</Text>
+          </TouchableOpacity>
+          {isOpen && (
+            <View style={styles.filterPanel}>
+              <Button title="Clear Area" onPress={clearFilters} />
+              {items.map((item, index) => (
+                <CheckBox
+                  key={index}
+                  checked={selectedIndex === index}
+                  onPress={() => handleRadioSelect(index, item)}
+                  iconType="material-community"
+                  checkedIcon="checkbox-marked"
+                  uncheckedIcon="checkbox-blank-outline"
+                  checkedColor="red"
+                  title={item}
+                />
+              ))}
+            </View>
+          )}
+        </ScrollView>
+      );
+
+    };
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.barContainer}>
-        <TextInput
-          style={styles.input}
-          onChangeText={setName}
-          value={name}
-          placeholder="Enter Recipe Name!"
-          keyboardType="default"
-        />
-        <View style={styles.buttContainer}>
-          <Button title="Search" onPress={handleSearchName} />
-        </View>
+
+        <CollapseFilter2 />
         <CollapseFilter />
         <ScrollView>
           {recipes.map((recipe, index) => (
@@ -172,8 +218,8 @@ const SearchPage = () => {
 
 const styles = StyleSheet.create({
   barContainer: {
-    flex: 1,
-    backgroundColor: '#25292e',
+
+    backgroundColor: '#f7f7f7',
   },
   buttContainer: {
     marginHorizontal: 12,
@@ -205,7 +251,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
   filterPanel: {
-    marginTop: 10,
+    marginTop: 0,
     borderWidth: 1,
     borderColor: '#000',
     padding: 10,
