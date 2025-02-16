@@ -72,6 +72,8 @@ My role was backend. I was tasked with creating the database and tables used in 
 + If you could do it over, what would you change?
   If I can do it over I would like to add more implementation. we faced problems in our app and we had ideas that we had to get rid of. so being able to implement these ideas would be something I would change. I also would like to change some of the layout, and maybe add some images or colors to the app. Make the UI more presentable, 
 + What is the most valuable thing you learned?
+   The most valuable thing I learned was able to work with my group well, being able to have great communication, make deadlines, and be accountable for their contributions and tasks. If we needed help or were stuck in a problem we had one another for support. 
+
 
 ## Conclusion
 
