@@ -62,17 +62,17 @@ This is a recipe application that makes use of an API we found [here](https://gi
 My role was backend. I was tasked with creating the database and tables used in the app. I also worked on adding sign and login functionality. adding new users to the database, testing if users can log in. NO username duplicates, login and sign up are not case sensitive. Checking if passwords match. I also worked on styling login and sign-up pages.
 
 + What was the biggest challenge?
-+ The biggest challenge was getting the database running. I have some experience with databases, but the biggest part was making the database local without having to use Heroku.
+  + The biggest challenge was getting the database running. I have some experience with databases, but the biggest part was making the database local without having to use Heroku.
 + Why was it a challenge?
-+ It was a challenge because the first database I had made for the app was a MYSQL database that could only be accessed with my device. I made it locally but the server only worked on my device and wouldn't be accessible to my groupmates  That caused problems with testing and group members being able to log in and add API implementations.
+  + It was a challenge because the first database I had made for the app was a MYSQL database that could only be accessed with my device. I made it locally but the server only worked on my device and wouldn't be accessible to my groupmates  That caused problems with testing and group members being able to log in and add API implementations.
   + How was the challenge addressed?
-  + The challenge was addressed by revamping the database, took me a while but I was able to get it up and running using Expo SQLite. Once we got the database working we were able to continue working on our project. It was a learning curve, my first time using react native but seeing the example that was on Canvas helped a lot in the process. 
+    + The challenge was addressed by revamping the database, took me a while but I was able to get it up and running using Expo SQLite. Once we got the database working we were able to continue working on our project. It was a learning curve, my first time using react native but seeing the example that was on Canvas helped a lot in the process. 
 + Favorite / most interesting part of this project
-+ My favorite part of the project was being able to learn a new environment, I've never used React Native, and being able to work on a project with React was fun and I learned from it. 
+  + My favorite part of the project was being able to learn a new environment, I've never used React Native, and being able to work on a project with React was fun and I learned from it. 
 + If you could do it over, what would you change?
-+ If I can do it over I would like to add more implementation. we faced problems in our app and we had ideas that we had to get rid of. so being able to implement these ideas would be something I would change. I also would like to change some of the layout, and maybe add some images or colors to the app. Make the UI more presentable, 
+  + If I can do it over I would like to add more implementation. we faced problems in our app and we had ideas that we had to get rid of. so being able to implement these ideas would be something I would change. I also would like to change some of the layout, and maybe add some images or colors to the app. Make the UI more presentable, 
 + What is the most valuable thing you learned?
-+ The most valuable thing I learned was able to work with my group well, being able to have great communication, make deadlines, and be accountable for their contributions and tasks. If we needed help or were stuck in a problem we had one another for support. 
+  + The most valuable thing I learned was able to work with my group well, being able to have great communication, make deadlines, and be accountable for their contributions and tasks. If we needed help or were stuck in a problem we had one another for support. 
 
 
 ## Conclusion
