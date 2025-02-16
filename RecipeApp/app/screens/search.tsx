@@ -96,13 +96,16 @@ const SearchPage = () => {
       }
     };
 
-    const handleRecipePress = async (recipe ) =>{
+
     const handleRecipePress = async (recipe) =>{
       // console.log('Recipe Pressed:',recipe.idMeal);
       //get this userId and store this recipe id
      
-      await addRecipe(userId,recipe.idMeal);
+      const check1 = await addRecipe(userId,recipe.idMeal);
       console.log(`Recipe Id: ${recipe.idMeal}, User ID: ${userId}`);
+      if(!check1){
+            Alert.alert(`Recipe already a favorite`);
+          }
 
     };
 

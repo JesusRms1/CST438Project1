@@ -141,16 +141,29 @@ export const updateUserInfo = async (id: number, newUsername?: string, newPasswo
 // insert recipe to user?
 export const addRecipe = async(userId:number,recipeId:number) =>{
     const database =await setupDatabase();
-    
-    try{
-        await database.runAsync(
-            'INSERT INTO  recipes (user_id,recipe_id) VALUES (?,?)',
-            [userId,recipeId]
-        );
-        console.log(`Recipe ${recipeId} added for user ${userId} inside addRecipe`);
 
-    }catch(error){
-        console.error("Error while adding recipe: ",error);
+    try {
+
+        const existingRecipe = await database.getFirstAsync(
+            'SELECT 1 FROM recipes WHERE recipe_id = ? AND user_id = ?',
+            [recipeId, userId]
+        );
+
+        if (existingRecipe) {
+            console.log(`Recipe ${recipeId} is already a favorite for user ${userId}`);
+            return false;
+        }
+
+        await database.runAsync(
+            'INSERT INTO recipes (user_id, recipe_id) VALUES (?, ?)',
+            [userId, recipeId]
+        );
+
+        console.log(`Recipe ${recipeId} added for user ${userId}`);
+        return true;
+
+    } catch (error) {
+        console.error("Error while adding recipe: ", error);
         return false;
     }
 
@@ -188,6 +201,7 @@ export const removeRecipe = async(userId:number,recipeId:number)=>{
     }catch(error){
         console.error("Error trying to remove recipe from user: ",error);
         return false;
+        }}
 export const deleteAllRecipes = async (userId: number): Promise<boolean> => {
   try {
     const database = await setupDatabase();

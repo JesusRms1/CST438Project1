@@ -1,4 +1,6 @@
 const API_BASE_URL = 'https://www.themealdb.com/api/json/v1/1';
+const API_IMAGE_URL = 'https://random-image-pepebigotes.vercel.app/api/random-image';
+
 type HttpMethod = 'GET' | 'POST' | 'PUT' | 'DELETE';
 
 interface FetchOptions {
@@ -32,6 +34,8 @@ export const api = {
   getMealById: (id: string) => fetchAPI<{ meals: any[] }>(`lookup.php?i=${id}`),
   getRandomMeal: () => fetchAPI<{ meals: any[] }>('random.php'),
   getMealsByName: (name: string) => fetchAPI<{ meals: any[] }>(`filter.php?c=${name}`),
+
+  getRandomImage: () => API_IMAGE_URL,
 };
 
 export default api;

@@ -2,8 +2,8 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import AccountScreen from './screens/login'; // Your login screen
-import SignupScreen from './screens/signup';   // Your signup screen
+import AccountScreen from './screens/login';
+import SignupScreen from './screens/signup';
 import HomeScreen from './screens/home';
 import RecipeInfoScreen from './screens/stolen';
 
