@@ -23,6 +23,15 @@ export const createTables = async () => {
         );
     `);
     console.log("Users table created");
+
+    // delete after running this just changes previouse usernames to lowercase for case sensetivity once you run delete.
+    try{
+        await database.execAsync(`UPDATE users SET username = LOWER(username);`);
+        console.log("Username name on table are now converted to Lowercase")
+    }
+    catch (error) {
+        console.error("Error converting usernames to lowercase:", error);
+    }
 };
 
   // Create Recipe Table
@@ -37,14 +46,16 @@ export const createTables = async () => {
         );
     `);
     console.log("Recipes table created");
+    
   }
 // Insert User (Sign-Up)
 export const insertUser = async (username: string, password: string) => {
     const database = await setupDatabase();
     try {
+        const lUsername = username.toLowerCase();
         await database.runAsync(
             'INSERT INTO users (username, password) VALUES (?, ?);',
-            username,
+            lUsername,
             password
         );
         return true;
@@ -58,9 +69,11 @@ export const insertUser = async (username: string, password: string) => {
 export const loginUser = async (username: string, password: string) => {
     const database = await setupDatabase();
     try {
+        // to handle case sensitive
+        const lUsername = username.toLowerCase();
         const user = await database.getFirstAsync(
             'SELECT * FROM users WHERE username = ? AND password = ?;',
-            username,
+            lUsername,
             password
         );
         return user ? true : false;
