@@ -39,13 +39,19 @@ This is a recipe application that makes use of an API we found [here](https://gi
 - Daniel's issues [a link to your issues](https://github.com/JesusRms1/CST438Project1/issues?q=is%3Aissue%20state%3Aclosed%20assignee%3ATunedTuna)
 
 #### What was your role / which stories did you work on
-
-+ What was the biggest challenge? 
+  +I set up the home page, search page, and recipe info page( which were later cleaned up by other team members). I made the date from search populate the home page, and the single data from the home page pass into the recipe page. 
++ What was the biggest challenge?
+    + Learning  react/expo fast.
 + Why was it a challenge?
+  + It takes time for me to fully understand new concepts, so having to work in a team and time constraints increased difficulty.
   + How was the challenge addressed?
+      +Breaking code on private branches and researching.
 + Favorite / most interesting part of this project
+  + Using my knowledge from previous classes to make stuff work.
 + If you could do it over, what would you change?
+    + Manging my time better to get better looking results on the project.
 + What is the most valuable thing you learned?
+    + Coordination and communication.
 
 ### Jesus Ramos
 
